@@ -1,0 +1,19 @@
+.Room {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 30px; }
+
+.Room__header i {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 9999; }
+
+.Room__user {
+  position: absolute;
+  bottom: 10px;
+  right: 10px; }
+  .Room__user img {
+    border: 2px solid white; }
+
+/*# sourceMappingURL=app.css.map */

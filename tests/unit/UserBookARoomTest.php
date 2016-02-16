@@ -1,28 +1,60 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UserBookARoomTest extends TestCase
 {
 	use DatabaseMigrations;
 
-    public function test_a_user_can_book_a_room()
+    public function test_a_user_can_book_a_room_with_correct_minimum_stay()
+    {
+        $user = factory(App\User::class)->create([]);
+        $room = factory(App\Room::class)->create([
+            'minimum_stay'  => 2
+        ]);
+
+        $this->actingAs($user);
+
+        $checkInDate = Carbon::now()->addDays(3);
+        $checkOutDate = Carbon::now()->addDays(7);
+
+        $response = $this->call('POST', '/bookings/'.$room->id, [
+            'roomId'    => $room->id,
+            'checkIn'   => $checkInDate->toDateString(),
+            'checkOut' => $checkOutDate->toDateString()
+        ]);
+
+        $this->seeInDatabase('bookings', [
+            'user_id'   => $user->id,
+            'room_id'   => $room->id,
+            'check_in'  => $checkInDate->toDateTimeString(),
+            'check_out' => $checkOutDate->toDateTimeString()
+        ]);
+    }
+
+    public function test_a_user_can_book_a_room_with_incorrect_minimum_stay()
     {
     	$user = factory(App\User::class)->create([]);
-    	$room = factory(App\Room::class)->create([]);
+    	$room = factory(App\Room::class)->create([
+            'minimum_stay'  => 3
+        ]);
 
     	$this->actingAs($user);
 
-    	$this->visit('/room/'.$room->slug)
-    		->see($room->name)
-    		->see($room->price)
-    		->press('Book Now')
-			->seeInDatabase('bookings', [
-				'user_id'	=> $user->id,
-				'room_id'	=> $room->id
-			]);
+        $checkIn = Carbon::now()->addDays(3)->toDateString();
+        $checkOut = Carbon::now()->addDays(5)->toDateString();
+
+        $this->call('POST', '/bookings/'.$room->id, [
+            'roomId'    => $room->id,
+            'checkIn'   => $checkIn,
+            'checkOut' => $checkOut
+        ]);
+        
+        $this->assertRedirectedTo('/room/'.$room->slug);
+
     }
 
     public function test_do_not_allow_an_unauthenticated_user_to_book_a_room()
@@ -30,10 +62,15 @@ class UserBookARoomTest extends TestCase
     	$user = factory(App\User::class)->create([]);
     	$room = factory(App\Room::class)->create([]);
 
-    	$this->visit('/room/'.$room->slug)
-    		->see($room->name)
-    		->see($room->price)
-    		->press('Book Now')
-    		->seePageIs('/login');
+        $checkIn = Carbon::now()->addDays(3)->toDateString();
+        $checkOut = Carbon::now()->addDays(5)->toDateString();
+
+        $response = $this->call('POST', '/bookings/'.$room->id, [
+            'roomId'    => $room->id,
+            'checkIn'   => $checkIn,
+            'checkOut' => $checkOut
+        ]);
+
+        $this->assertRedirectedTo('/login');
     }
 }

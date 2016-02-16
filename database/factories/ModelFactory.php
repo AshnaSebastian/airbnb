@@ -20,11 +20,20 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Country::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence,
+        'slug'  => $faker->slug
+    ];
+});
+
 $factory->define(App\Room::class, function (Faker\Generator $faker) {
     return [
     	'user_id'	=> factory(App\User::class)->create()->id,
+        'country_id'   => factory(App\Country::class)->create()->id,
         'name' => $faker->sentence,
         'slug'	=> $faker->slug,
-        'price'	=> $faker->randomNumber(2)
+        'price'	=> $faker->randomNumber(2),
+        'minimum_stay'  => 1
     ];
 });

@@ -15,7 +15,10 @@ Route::group(['middleware' => ['web']], function () {
 
 	Route::get('/home', 'HomeController@index');
 
-	Route::get('room/{room}', 'RoomsController@show');
+	Route::get('room/{room}', ['as' => 'room', 'uses' => 'RoomsController@show']);
+
+	Route::get('country/{country}/rooms', 'CountriesController@rooms');
+	Route::get('country/rooms', 'CountriesController@roomsTesting');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {

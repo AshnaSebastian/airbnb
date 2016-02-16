@@ -1,2 +1,24 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+.Room {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 30px;
+}
 
+.Room__header {
+	i {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 9999;
+	}
+}
+
+.Room__user {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    img {
+    	border: 2px solid white;
+    }
+}

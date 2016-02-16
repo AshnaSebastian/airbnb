@@ -18,6 +18,7 @@ class CreateRoomsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->double('price');
+            $table->integer('minimum_stay')->default(1);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

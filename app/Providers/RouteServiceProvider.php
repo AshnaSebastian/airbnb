@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Country;
 use App\Room;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
@@ -26,7 +27,11 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->bind('room', function($room) {
-            return Room::whereSlug($room)->first();
+            return Room::with('country')->whereSlug($room)->first();
+        });
+
+        $this->bind('country', function($country) {
+            return Country::with('rooms')->whereSlug($country)->first();
         });
 
         parent::boot($router);
