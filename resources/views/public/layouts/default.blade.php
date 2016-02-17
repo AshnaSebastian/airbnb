@@ -7,6 +7,7 @@
         <title>Airbnb</title>
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
         <link href="{{ elixir('css/all.css') }}" rel="stylesheet">
+        @yield('header_styles')
     </head>
 
     <body>
@@ -17,7 +18,7 @@
         @yield('content')
 
         <script src="{{ elixir('js/all.js') }}"></script>
-
+        @yield('footer_scripts')
     </body>
 
 </html>

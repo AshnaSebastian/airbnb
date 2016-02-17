@@ -14,6 +14,7 @@ class BookingsController extends Controller
 {
     public function store(Request $request)
     {    	
+        dd($request->all());
     	$room = Room::findOrFail($request->roomId);
 
     	list($checkInYear, $checkInMonth, $checkInDay) = explode('-', $request->checkIn);

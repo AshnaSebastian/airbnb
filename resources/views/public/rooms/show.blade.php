@@ -1,4 +1,7 @@
 @extends('public.layouts.default')
+@section('header_styles')
+	<link rel="stylesheet" href="{{ elixir('css/datepicker.css') }}"></script>
+@endsection
 @section('content')
 	<div class="SingleRoom">
 		@include('public.rooms._gallery', ['photos' => $room->photos])
@@ -69,16 +72,15 @@
 							<form method="POST" action="{{ route('bookings.store', $room->id) }}">
 								{!! csrf_field() !!}
 								<input type="hidden" name="roomId" value="{{ $room->id }}" />
-								<div class="form-group">
-									<label>Check in</label>
-									<input type="date" class="form-control" name="checkIn" />
-								</div>
 
 								<div class="form-group">
 									<label>Check in</label>
-									<input type="date" class="form-control" name="checkOut" />
+									<input type="text" id="checkIn" class="form-control" name="checkIn" />
 								</div>
-
+								<div class="form-group">
+									<label>Check in</label>
+									<input type="text" id="checkOut" class="form-control" name="checkOut" />
+								</div>
 								<div class="form-group">
 									<label>Guests</label>
 									<select name="guests" class="form-control">
@@ -87,9 +89,8 @@
 										@endforeach		
 									</select>
 								</div>
-
 								<div class="form-group">
-									<button type="button" class="btn btn-primary btn-lg btn-block">Book Now</button>
+									<button type="submit" class="btn btn-primary btn-lg btn-block">Book Now</button>
 								</div>
 							</form>
 
@@ -272,4 +273,8 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('footer_scripts')
+	<script src="{{ elixir('js/datepicker.js') }}"></script>
 @endsection

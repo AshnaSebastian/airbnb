@@ -26,11 +26,25 @@ elixir(function(mix) {
     		bowerPath + 'bootstrap/dist/js/bootstrap.js'
     	], 'public/js/all.js')
 
+        .styles([
+            bowerPath + 'jquery-ui/themes/smoothness/jquery-ui.css'
+        ], 'public/css/datepicker.css')
+
+        .scripts([
+            bowerPath + 'jquery-ui/jquery-ui.js',
+            'datepicker.js'
+        ], 'public/js/datepicker.js')
+
     	.copy('bower_components/bootstrap/dist/fonts/', 'public/build/fonts')
     	.copy('bower_components/font-awesome/fonts/', 'public/build/fonts')
 
+        .copy('bower_components/jquery-ui/themes/smoothness/images/', 'public/build/css/images')
+
     	.version([
     		'public/css/all.css',
-    		'public/js/all.js'
+    		'public/js/all.js',
+
+            'public/css/datepicker.css',
+            'public/js/datepicker.js'
     		]);
 });
