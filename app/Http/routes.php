@@ -18,7 +18,6 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('room/{room}', ['as' => 'room', 'uses' => 'RoomsController@show']);
 
 	Route::get('country/{country}/rooms', 'CountriesController@rooms');
-	Route::get('country/rooms', 'CountriesController@roomsTesting');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {

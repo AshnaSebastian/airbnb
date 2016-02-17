@@ -1,24 +1,22 @@
-.Room {
-	position: relative;
-	overflow: hidden;
-	margin-bottom: 30px;
+$mainFont: 'Lato';
+$grey: #565a5c;
+$cream: #f5f5f5;
+
+body {
+	font-family: $mainFont;
+	color: $grey;
 }
 
-.Room__header {
-	i {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		z-index: 9999;
-	}
+.whiteBg {
+	background: white;
+	padding: 20px 0px;
 }
 
-.Room__user {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-
-    img {
-    	border: 2px solid white;
-    }
+.creamBg {
+	background: $cream;
+	padding: 30px 0px;
+	border-top: 1px solid #dce0e0;
 }
+
+@import 'components/Room';
+@import 'components/Overwrite';
