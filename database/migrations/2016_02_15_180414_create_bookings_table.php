@@ -18,6 +18,7 @@ class CreateBookingsTable extends Migration
             $table->integer('room_id')->unsigned();
             $table->datetime('check_in');
             $table->datetime('check_out');
+            $table->integer('guests');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->timestamps();

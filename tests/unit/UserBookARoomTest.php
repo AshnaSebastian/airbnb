@@ -24,14 +24,18 @@ class UserBookARoomTest extends TestCase
         $response = $this->call('POST', '/bookings/'.$room->id, [
             'roomId'    => $room->id,
             'checkIn'   => $checkInDate->toDateString(),
-            'checkOut' => $checkOutDate->toDateString()
+            'checkOut' => $checkOutDate->toDateString(),
+            'guests'    => 2
         ]);
+
+        dd($response);
 
         $this->seeInDatabase('bookings', [
             'user_id'   => $user->id,
             'room_id'   => $room->id,
             'check_in'  => $checkInDate->toDateTimeString(),
-            'check_out' => $checkOutDate->toDateTimeString()
+            'check_out' => $checkOutDate->toDateTimeString(),
+            'guests'    => 2
         ]);
     }
 
@@ -50,7 +54,8 @@ class UserBookARoomTest extends TestCase
         $this->call('POST', '/bookings/'.$room->id, [
             'roomId'    => $room->id,
             'checkIn'   => $checkIn,
-            'checkOut' => $checkOut
+            'checkOut' => $checkOut,
+            'guests'   => 2
         ]);
         
         $this->assertRedirectedTo('/room/'.$room->slug);
@@ -68,7 +73,8 @@ class UserBookARoomTest extends TestCase
         $response = $this->call('POST', '/bookings/'.$room->id, [
             'roomId'    => $room->id,
             'checkIn'   => $checkIn,
-            'checkOut' => $checkOut
+            'checkOut' => $checkOut,
+            'guests'    => 2
         ]);
 
         $this->assertRedirectedTo('/login');

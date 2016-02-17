@@ -14,11 +14,10 @@ class BookingsController extends Controller
 {
     public function store(Request $request)
     {    	
-        dd($request->all());
     	$room = Room::findOrFail($request->roomId);
 
-    	list($checkInYear, $checkInMonth, $checkInDay) = explode('-', $request->checkIn);
-    	list($checkOutYear, $checkOutMonth, $checkOutDay) = explode('-', $request->checkOut);
+    	list($checkInMonth, $checkInDay, $checkInYear) = explode('/', $request->checkIn);
+    	list($checkOutMonth, $checkOutDay, $checkOutYear) = explode('/', $request->checkOut);
 
     	$checkInDate = Carbon::createFromDate($checkInYear, $checkInMonth, $checkInDay);
     	$checkOutDate = Carbon::createFromDate($checkOutYear, $checkOutMonth, $checkOutDay);
@@ -34,7 +33,8 @@ class BookingsController extends Controller
     		'user_id'	=> Auth::user()->id,
     		'room_id'	=> $room->id,
     		'check_in'	=> $checkInDate->toDateTimeString(),
-    		'check_out'	=> $checkOutDate->toDateTimeString()
+    		'check_out'	=> $checkOutDate->toDateTimeString(),
+            'guests'    => $request->guests
     	]);
     }
 }
