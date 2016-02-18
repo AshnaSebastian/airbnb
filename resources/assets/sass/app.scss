@@ -18,5 +18,9 @@ body {
 	border-top: 1px solid #dce0e0;
 }
 
+.clear-padding-right {
+	padding-right: 0 !important;
+}
+
 @import 'components/Room';
 @import 'components/Overwrite';

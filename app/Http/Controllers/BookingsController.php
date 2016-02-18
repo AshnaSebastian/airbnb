@@ -16,8 +16,8 @@ class BookingsController extends Controller
     {    	
     	$room = Room::findOrFail($request->roomId);
 
-    	list($checkInMonth, $checkInDay, $checkInYear) = explode('/', $request->checkIn);
-    	list($checkOutMonth, $checkOutDay, $checkOutYear) = explode('/', $request->checkOut);
+    	list($checkInYear, $checkInMonth, $checkInDay) = explode('-', $request->checkIn);
+    	list($checkOutYear, $checkOutMonth, $checkOutDay) = explode('-', $request->checkOut);
 
     	$checkInDate = Carbon::createFromDate($checkInYear, $checkInMonth, $checkInDay);
     	$checkOutDate = Carbon::createFromDate($checkOutYear, $checkOutMonth, $checkOutDay);

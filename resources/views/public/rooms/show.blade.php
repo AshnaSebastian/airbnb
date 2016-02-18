@@ -8,7 +8,7 @@
 		<div class="whiteBg">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<div class="SingleRoom__description row">
 							<div class="col-md-2">
 								<div class="SingleRoom__user">
@@ -34,21 +34,21 @@
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
 											<i class="fa fa-users fa-2x"></i>
-											Entire home/apt
+											2 Guests
 										</p>
 									</div>
 
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
 											<i class="fa fa-users fa-2x"></i>
-											Entire home/apt
+											1 Bedroom
 										</p>
 									</div>
 
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
 											<i class="fa fa-users fa-2x"></i>
-											Entire home/apt
+											1 Bed
 										</p>
 									</div>
 								</div>
@@ -56,7 +56,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="SingleRoom__booking">
 							<div class="SingleRoom__booking--header">
 								<div class="row">
@@ -69,30 +69,7 @@
 								</div>
 							</div>
 
-							<form method="POST" action="{{ route('bookings.store', $room->id) }}">
-								{!! csrf_field() !!}
-								<input type="hidden" name="roomId" value="{{ $room->id }}" />
-
-								<div class="form-group">
-									<label>Check in</label>
-									<input type="text" id="checkIn" class="form-control" name="checkIn" />
-								</div>
-								<div class="form-group">
-									<label>Check in</label>
-									<input type="text" id="checkOut" class="form-control" name="checkOut" />
-								</div>
-								<div class="form-group">
-									<label>Guests</label>
-									<select name="guests" class="form-control">
-										@foreach( range(1, 20) as $count )
-											<option value="{{ $count }}">{{ $count }}</option>
-										@endforeach		
-									</select>
-								</div>
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary btn-lg btn-block">Book Now</button>
-								</div>
-							</form>
+							<div id="BookingForm"></div>
 
 						</div>
 					</div>
@@ -102,7 +79,7 @@
 		<div class="creamBg">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<h2>About this listing</h2>
 						<p>
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -277,4 +254,5 @@
 
 @section('footer_scripts')
 	<script src="{{ elixir('js/datepicker.js') }}"></script>
+	<script src="/js/BookingForm.js"></script>
 @endsection

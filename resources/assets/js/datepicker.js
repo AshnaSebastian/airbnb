@@ -1,18 +1,22 @@
   $(function() {
     $( "#checkIn" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
+      changeMonth: false,
       numberOfMonths: 1,
+      dateFormat: 'yy-mm-dd',
+      minDate: 0,
+      showAnim: 'slideDown',
       onClose: function( selectedDate ) {
-        $( "#checkOut" ).datepicker( "option", "minDate", selectedDate );
+        $("#checkOut").datepicker( "option", "minDate", selectedDate);
       }
     });
-    $( "#checkOut" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
+
+    $("#checkOut").datepicker({
+      changeMonth: false,
       numberOfMonths: 1,
+      dateFormat: 'yy-mm-dd',
+      showAnim: 'slideDown',
       onClose: function( selectedDate ) {
-        $( "#checkIn" ).datepicker( "option", "maxDate", selectedDate );
+        $("#checkIn").datepicker( "option", "maxDate", selectedDate );
       }
     });
   });

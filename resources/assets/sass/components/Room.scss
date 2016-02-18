@@ -85,7 +85,7 @@
 	font-size: 24px;
 	color: $grey;
 	font-weight: normal;
-	margin-top: 0;
+	margin-top: 10px;
 }
 
 .SigleRoom__country {
@@ -174,5 +174,6 @@
 }
 
 .SingleRoom__booking--perNight {
+	text-align: right;
 	margin-top: 8px;
 }

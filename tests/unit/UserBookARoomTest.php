@@ -27,9 +27,7 @@ class UserBookARoomTest extends TestCase
             'checkOut' => $checkOutDate->toDateString(),
             'guests'    => 2
         ]);
-
-        dd($response);
-
+        
         $this->seeInDatabase('bookings', [
             'user_id'   => $user->id,
             'room_id'   => $room->id,

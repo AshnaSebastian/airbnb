@@ -31,20 +31,21 @@ elixir(function(mix) {
         ], 'public/css/datepicker.css')
 
         .scripts([
-            bowerPath + 'jquery-ui/jquery-ui.js',
-            'datepicker.js'
+            bowerPath + 'jquery-ui/jquery-ui.js'
         ], 'public/js/datepicker.js')
 
-    	.copy('bower_components/bootstrap/dist/fonts/', 'public/build/fonts')
-    	.copy('bower_components/font-awesome/fonts/', 'public/build/fonts')
-
+        .copy('bower_components/bootstrap/dist/fonts/', 'public/build/fonts')
+        .copy('bower_components/font-awesome/fonts/', 'public/build/fonts')
         .copy('bower_components/jquery-ui/themes/smoothness/images/', 'public/build/css/images')
 
-    	.version([
-    		'public/css/all.css',
-    		'public/js/all.js',
+	.version([
+		'public/css/all.css',
+		'public/js/all.js',
 
-            'public/css/datepicker.css',
-            'public/js/datepicker.js'
-    		]);
+        'public/css/datepicker.css',
+        'public/js/datepicker.js',
+		]);
+
+    mix.browserify('components/Bookingform.js');
+
 });
