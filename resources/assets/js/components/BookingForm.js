@@ -7,24 +7,38 @@ var BookingForm = React.createClass({
 		return {
 			checkIn: '',
 			checkOut: '',
-			guests: 1
+			guests: 1,
+			totalDays: 0,
+			serviceFee: 8, //sample fee
+			total: 0,
 		}
 	},
 
 	componentDidMount() {
+
 	    $( "#checkIn" ).datepicker({
 			changeMonth: false,
 			numberOfMonths: 1,
 			dateFormat: 'yy-mm-dd',
 			minDate: 0, //Today's Date
 			showAnim: 'slideDown',
-			onSelect: function( selectedDate ) {
+			// altField: "#checkOut",
+			// altFormat: "yy-mm-dd",
+			onClose: function(selectedDate) {
 				var checkOutMinDate = $('#checkIn').datepicker('getDate');
 				checkOutMinDate.setDate(checkOutMinDate.getDate() + window.room.minimum_stay);
 
-				this.setState({ checkIn: selectedDate });
+				this.setState({
+					checkIn: selectedDate,
+				})
 
-				$("#checkOut").datepicker( "option", "minDate", checkOutMinDate);
+				if( this.state.checkOut !== '' )
+				{
+					this.calculateTotal();
+				}
+				
+				$("#checkOut").datepicker("option", "minDate", checkOutMinDate);
+
 			}.bind(this)
 	    });
 
@@ -33,12 +47,29 @@ var BookingForm = React.createClass({
 			numberOfMonths: 1,
 			dateFormat: 'yy-mm-dd',
 			showAnim: 'slideDown',
-			onSelect: function( selectedDate ) {
-				console.log(selectedDate);
-				this.setState({ checkOut: selectedDate });
+			onClose: function( selectedDate ) {
+				this.setState({ 
+					checkOut: selectedDate
+				});
 				$("#checkIn").datepicker( "option", "maxDate", selectedDate );
+
+				this.calculateTotal();
 			}.bind(this)
 	    });
+	},
+
+	calculateTotal()
+	{
+		var roomPrice = window.room.price;
+
+		var url = '/total-stay-days/' + this.state.checkOut + '/' + this.state.checkIn;
+		$.get(url, function(response) {
+			this.setState({
+				totalDays: response,
+				total: (roomPrice * response) + this.state.serviceFee
+			});
+		}.bind(this));
+
 	},
 
 	handleGuestsChange(e) {
@@ -48,7 +79,24 @@ var BookingForm = React.createClass({
 	submitForm(e) {
 		e.preventDefault();
 
-		console.log(window.room.id, this.state.checkIn, this.state.checkOut, this.state.guests);
+		var url = '/bookings/' + window.room.id;
+		$.ajax({
+			url: url,
+			type: 'POST',
+			headers: { 'X-CSRF-Token' : csrf_token },
+			data: {
+				roomId: window.room.id,
+				checkIn: this.state.checkIn,
+				checkOut: this.state.checkOut,
+				guests: this.state.guests
+			},
+			success: function(response) {
+				console.log(response)
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.log(err.toString());
+			}.bind(this)
+		})
 	},
 
 	render() {
@@ -85,9 +133,25 @@ var BookingForm = React.createClass({
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-12">
+						<ul className="list-group">
+							<li className="list-group-item">
+								${window.room.price} &times; {this.state.totalDays} nights
+								<p className="float-right">${ window.room.price * this.state.totalDays}</p>
+							</li>
+							<li className="list-group-item">
+								Service Fee
+								<p className="float-right">{ this.state.serviceFee }</p>
+							</li>
+							<li className="list-group-item">
+								Total
+								<p className="float-right">${ this.state.total }</p>
+							</li>
+						</ul>
+					</div>
+					<div className="col-xs-12 col-md-12">
 						<div className="form-group">
 							<button type="submit" 
-								className="btn btn-primary btn-lg btn-block"
+								className="btn btn-danger btn-lg btn-block"
 								onClick={this.submitForm}
 							>	
 								Request to Book

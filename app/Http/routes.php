@@ -18,10 +18,15 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('room/{room}', ['as' => 'room', 'uses' => 'RoomsController@show']);
 
 	Route::get('country/{country}/rooms', 'CountriesController@rooms');
+
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
 	Route::post('bookings/{room}', ['as' => 'bookings.store', 'uses' => 'BookingsController@store']);
 
+});
+
+Route::group(['middleware' => 'api'], function(){
+	Route::get('total-stay-days/{checkOut}/{checkIn}', 'Api\BookingsController@getTotalStayDays');
 });

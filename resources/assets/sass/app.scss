@@ -22,5 +22,13 @@ body {
 	padding-right: 0 !important;
 }
 
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
 @import 'components/Room';
 @import 'components/Overwrite';

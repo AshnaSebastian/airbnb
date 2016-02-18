@@ -14,6 +14,12 @@ body {
 .clear-padding-right {
   padding-right: 0 !important; }
 
+.float-right {
+  float: right; }
+
+.float-left {
+  float: left; }
+
 .Room {
   position: relative;
   overflow: hidden;
