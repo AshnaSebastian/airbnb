@@ -42,7 +42,7 @@
 						</p>
 
 						<div>
-							<img src="https://maps.googleapis.com/maps/api/staticmap?center=41.01974502322511%2C28.98038830944819&size=314x214&zoom=10&client=gme-airbnbinc&channel=monorail-prod&signature=N51IUEAR-tfKnWNLFRD-ZfrDhX8%3D" alt="" title="" />
+							<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$country->name}}&zoom=5&size=400x215&key=AIzaSyC6hMPQBLsashJMTB4sdYVzCR0yKp-Xcmk" alt="" title="" />
 						</div>
 					</div>
 				</div>

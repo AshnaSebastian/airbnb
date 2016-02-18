@@ -11,7 +11,7 @@ class CountriesController extends Controller
 {
 	public function index()
 	{
-		$countries = Country::with('rooms')->take(5)->get();
+		$countries = Country::with('rooms')->get();
 		return view('public.countries.index', compact('countries'));
 	}
 
