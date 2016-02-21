@@ -31,7 +31,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->bind('country', function($country) {
-            return Country::with('rooms.user', 'rooms.photos')->whereSlug($country)->first();
+            return Country::with('rooms.user', 'rooms.photos', 'photos')->whereSlug($country)->first();
         });
 
         parent::boot($router);

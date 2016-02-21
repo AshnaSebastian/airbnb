@@ -110,14 +110,14 @@ var BookingForm = React.createClass({
 						<div className="form-group">
 							<label>Check in</label>
 							<input type="text" id="checkIn" 
-								className="form-control" />
+								className="form-control" placeholder="yyyy-mm-dd" />
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-4 clear-padding-right">
 						<div className="form-group">
 							<label>Check out</label>
 							<input type="text" id="checkOut" 							
-								className="form-control" />
+								className="form-control" placeholder="yyyy-mm-dd" />
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-4">

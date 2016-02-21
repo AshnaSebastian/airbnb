@@ -8879,6 +8879,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .Country__available-in {
   margin-top: 30px; }
+  .Country__available-in .btn {
+    font-weight: 300;
+    padding: 10px 50px; }
+
+.Country__see-available-places {
+  margin: 20px 0px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #ddd; }
 
 .Room {
   position: relative;
@@ -9014,6 +9022,36 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn {
   border-radius: 3px !important; }
+
+.ui-datepicker.ui-corner-all {
+  border-radius: 2px !important; }
+
+.ui-datepicker .ui-widget-header {
+  border: none;
+  background: none; }
+  .ui-datepicker .ui-widget-header .ui-datepicker-title {
+    font-size: 14px;
+    font-weight: normal; }
+
+.ui-datepicker .ui-datepicker-calendar th {
+  font-size: 12px;
+  font-weight: normal; }
+
+.ui-datepicker td {
+  border: 0 !important;
+  padding: 0px !important; }
+  .ui-datepicker td span, .ui-datepicker td a {
+    padding: .4em .2em !important;
+    text-align: center !important; }
+
+.ui-datepicker .ui-state-default,
+.ui-datepicker .ui-widget-content .ui-state-default,
+.ui-datepicker .ui-widget-header .ui-state-default {
+  border: none !important;
+  background: none !important; }
+
+.ui-datepicker .ui-state-disabled .ui-state-default {
+  background: #AAA !important; }
 
 /*# sourceMappingURL=app.css.map */
 

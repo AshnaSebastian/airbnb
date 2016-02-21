@@ -19148,7 +19148,7 @@ var BookingForm = React.createClass({
 							'Check in'
 						),
 						React.createElement('input', { type: 'text', id: 'checkIn',
-							className: 'form-control' })
+							className: 'form-control', placeholder: 'yyyy-mm-dd' })
 					)
 				),
 				React.createElement(
@@ -19163,7 +19163,7 @@ var BookingForm = React.createClass({
 							'Check out'
 						),
 						React.createElement('input', { type: 'text', id: 'checkOut',
-							className: 'form-control' })
+							className: 'form-control', placeholder: 'yyyy-mm-dd' })
 					)
 				),
 				React.createElement(

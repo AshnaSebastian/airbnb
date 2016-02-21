@@ -24,6 +24,12 @@ class CountriesController extends Controller
     public function rooms($country)
     {    	
     	$rooms = $country->rooms;
-		return view('public.rooms.per-country', compact('rooms'));
+		
+		JavaScript::put([
+			'country'	=> $country,
+			'rooms'	=> $rooms
+		]);
+
+		return view('public.rooms.per-country');
     }
 }

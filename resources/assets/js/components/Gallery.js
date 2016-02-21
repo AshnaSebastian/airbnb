@@ -8,6 +8,7 @@ var Gallery = React.createClass({
 		var carousel_href = '#' + carousel_id;
 
 		var count = 1;
+
 		var photos = this.props.photos.map(function(photo) {
 			var itemClass = classNames({
 				'item'	: true,
@@ -24,7 +25,6 @@ var Gallery = React.createClass({
 				</div>
 			)
 		});
-
 
 		return (
 			<div id={carousel_id} className="carousel slide" data-ride="carousel">

@@ -19083,85 +19083,6 @@ module.exports = require('./lib/React');
 },{"./lib/React":54}],160:[function(require,module,exports){
 'use strict';
 
-var _Rooms = require('./Rooms');
-
-var _Rooms2 = _interopRequireDefault(_Rooms);
-
-var _Gallery = require('./Gallery');
-
-var _Gallery2 = _interopRequireDefault(_Gallery);
-
-var _WhyVisit = require('./WhyVisit');
-
-var _WhyVisit2 = _interopRequireDefault(_WhyVisit);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var React = require('react');
-var ReactDOM = require('react-dom');
-
-var Countries = React.createClass({
-	displayName: 'Countries',
-	getInitialState: function getInitialState() {
-		return {
-			countries: window.countries
-		};
-	},
-	render: function render() {
-		var countries = window.countries.map(function (country) {
-			return React.createElement(
-				'div',
-				{ key: country.id, className: 'Country col-md-12' },
-				React.createElement(
-					'h2',
-					null,
-					country.name
-				),
-				React.createElement(
-					'div',
-					{ className: 'row' },
-					React.createElement(
-						'div',
-						{ className: 'Country__gallery col-md-8' },
-						React.createElement(_Gallery2.default, { id: country.id, photos: country.photos })
-					),
-					React.createElement(
-						'div',
-						{ className: 'Country__why-visit col-md-4' },
-						React.createElement(_WhyVisit2.default, { country: country })
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'row' },
-					React.createElement(
-						'div',
-						{ className: 'Country__available-in col-md-12' },
-						React.createElement(
-							'h4',
-							null,
-							'Available in ',
-							country.name
-						),
-						React.createElement(_Rooms2.default, { rooms: country.rooms, countrySlug: country.slug })
-					)
-				)
-			);
-		});
-
-		return React.createElement(
-			'div',
-			null,
-			countries
-		);
-	}
-});
-
-ReactDOM.render(React.createElement(Countries, null), document.getElementById('Countries'));
-
-},{"./Gallery":161,"./Rooms":163,"./WhyVisit":164,"react":159,"react-dom":30}],161:[function(require,module,exports){
-'use strict';
-
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
@@ -19229,7 +19150,7 @@ var Gallery = React.createClass({
 
 exports.default = Gallery;
 
-},{"classnames":1,"react":159}],162:[function(require,module,exports){
+},{"classnames":1,"react":159}],161:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19315,12 +19236,8 @@ var Room = React.createClass({
 
 exports.default = Room;
 
-},{"./Gallery":161,"react":159}],163:[function(require,module,exports){
+},{"./Gallery":160,"react":159}],162:[function(require,module,exports){
 'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
 
 var _Room = require('./Room');
 
@@ -19329,91 +19246,35 @@ var _Room2 = _interopRequireDefault(_Room);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-var Rooms = React.createClass({
-	displayName: 'Rooms',
+var RoomsPerCountry = React.createClass({
+	displayName: 'RoomsPerCountry',
+	getInitialState: function getInitialState() {
+		return {
+			country: window.country,
+			rooms: window.rooms
+		};
+	},
 	render: function render() {
-		var countryUrl = "/country/" + this.props.countrySlug + "/rooms";
-		var count = 1;
-
-		var rooms = this.props.rooms.map(function (room) {
-			while (count++ <= 3) {
-				return React.createElement(
-					'div',
-					{ key: room.id, className: 'col-md-4' },
-					React.createElement(_Room2.default, { room: room, isLikeable: false })
-				);
-			}
+		var rooms = window.rooms.map(function (room) {
+			return React.createElement(
+				'div',
+				{ key: room.id, className: 'col-xs-12 col-md-6' },
+				React.createElement(_Room2.default, { room: room, isLikeable: true })
+			);
 		});
 
 		return React.createElement(
 			'div',
 			{ className: 'row' },
-			rooms,
-			React.createElement(
-				'div',
-				{ className: 'Country__see-available-places  col-md-12' },
-				React.createElement(
-					'p',
-					{ className: 'text-center' },
-					React.createElement(
-						'a',
-						{ href: countryUrl, className: 'btn btn-danger btn-lg' },
-						'See all available places'
-					)
-				)
-			)
+			rooms
 		);
 	}
 });
 
-exports.default = Rooms;
+ReactDOM.render(React.createElement(RoomsPerCountry, null), document.getElementById('RoomsPerCountry'));
 
-},{"./Room":162,"react":159}],164:[function(require,module,exports){
-'use strict';
+},{"./Room":161,"react":159,"react-dom":30}]},{},[162]);
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var React = require('react');
-var googlemap_key = $('meta[name="googlemap_key"]').attr('content');
-
-var WhyVisit = React.createClass({
-	displayName: 'WhyVisit',
-	render: function render() {
-		var google_map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + this.props.country.name + '&zoom=5&size=400x215&key=' + googlemap_key;
-
-		return React.createElement(
-			'div',
-			null,
-			React.createElement(
-				'h4',
-				{ className: 'Country__why-visit-title' },
-				'Why Visit?'
-			),
-			React.createElement(
-				'p',
-				null,
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
-			),
-			React.createElement(
-				'p',
-				null,
-				' '
-			),
-			React.createElement(
-				'div',
-				null,
-				React.createElement('img', { src: google_map,
-					alt: this.props.country.name, title: this.props.country.name,
-					className: 'img-responsive' })
-			)
-		);
-	}
-});
-
-exports.default = WhyVisit;
-
-},{"react":159}]},{},[160]);
-
-//# sourceMappingURL=Countries.js.map
+//# sourceMappingURL=RoomsPerCountry.js.map

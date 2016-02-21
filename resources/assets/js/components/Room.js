@@ -8,11 +8,13 @@ var Room = React.createClass({
 
 		return (
 			<div className="Room">
-				<div className="Room__header">
-					<a href="#">
-						<i className="fa fa-heart-o fa-2x"></i>
-					</a>
-				</div>
+				{ this.props.isLikeable ?
+					<div className="Room__header">
+						<a href="#">
+							<i className="fa fa-heart-o fa-2x"></i>
+						</a>
+					</div> : ''
+				}
 				<div className="Room__gallery">
 					<Gallery id={this.props.room.id} photos={this.props.room.photos} />
 					<h4 className="Room__price">

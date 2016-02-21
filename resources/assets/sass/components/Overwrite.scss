@@ -8,3 +8,47 @@
 .btn {
 	border-radius: 3px !important;
 }
+
+.ui-datepicker {
+	&.ui-corner-all {
+		border-radius: 2px !important;
+	}
+
+	.ui-widget-header {
+		border: none;
+		background: none;
+		.ui-datepicker-title {
+			font-size: 14px;
+			font-weight: normal;
+		}
+	}
+
+	.ui-datepicker-calendar {
+		th {
+			font-size: 12px;
+			font-weight: normal;
+		}
+	}
+
+	td {
+		border: 0 !important;
+		padding: 0px !important;
+		span, a {
+			padding: .4em .2em !important;
+			text-align: center !important;
+		}
+	}
+
+	.ui-state-default,
+	.ui-widget-content .ui-state-default, 
+	.ui-widget-header .ui-state-default {
+		border: none !important;
+		background: none !important;
+	}
+
+	.ui-state-disabled {
+		.ui-state-default {
+			background: #AAA !important;
+		}
+	}
+}
