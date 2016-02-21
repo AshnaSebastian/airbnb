@@ -32,8 +32,8 @@ $factory->define(App\Country::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Room::class, function (Faker\Generator $faker) {
     return [
-    	'user_id'	=> factory(App\User::class)->create()->id,
-        'country_id'   => factory(App\Country::class)->create()->id,
+        'user_id'   => 1,
+        'country_id'    => 1,
         'name' => $faker->sentence,
         'slug'	=> $faker->slug,
         'price'	=> $faker->randomNumber(2),
@@ -44,7 +44,7 @@ $factory->define(App\Room::class, function (Faker\Generator $faker) {
 $factory->define(App\Photo::class, function (Faker\Generator $faker) {
     return [
         'path'  => $faker->imageUrl(1400, 720),
-        'imageable_id'  => factory(App\Room::class)->create()->id,
+        'imageable_id'  => 1,
         'imageable_type' => 'App\Room'
     ];
 });

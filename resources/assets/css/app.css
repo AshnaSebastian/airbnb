@@ -1,6 +1,12 @@
 body {
   font-family: "Lato";
   color: #565a5c; }
+  body.cream {
+    background: #f5f5f5; }
+
+h1, h2, h3, h4, h5, h6 {
+  color: #565a5c;
+  font-weight: 400; }
 
 .whiteBg {
   background: white;
@@ -19,6 +25,12 @@ body {
 
 .float-left {
   float: left; }
+
+.Country__why-visit .Country__why-visit-title {
+  margin-top: 0; }
+
+.Country__available-in {
+  margin-top: 30px; }
 
 .Room {
   position: relative;
@@ -40,14 +52,14 @@ body {
   position: relative; }
 
 .Room__price {
-  position: absolute;
-  padding-left: 20px;
-  bottom: 30px;
-  background: rgba(0, 0, 0, 0.5);
+  font-size: 22px;
   color: white;
-  padding: 10px 20px;
-  font-size: 26px;
-  font-weight: normal; }
+  font-weight: normal;
+  bottom: 20px;
+  padding-left: 10px;
+  padding: 5px 10px;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5); }
 
 .Room__user {
   position: absolute;
@@ -115,33 +127,22 @@ body {
   .SingleRoom__info--gallery .row div[class^="col-"] img {
     width: 100%; }
 
-.SingleRoom__info--gallery .row .lastPhoto {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column; }
-  .SingleRoom__info--gallery .row .lastPhoto .viewPhotos {
-    top: -70px;
-    position: relative; }
-    .SingleRoom__info--gallery .row .lastPhoto .viewPhotos p a {
-      color: white; }
-      .SingleRoom__info--gallery .row .lastPhoto .viewPhotos p a:hover {
-        color: white;
-        text-decoration: underline; }
+.SingleRoom__info--gallery .row .lastPhoto .viewPhotos {
+  top: -70px;
+  position: relative;
+  text-align: center; }
+
+.SingleRoom__info--gallery .row .lastPhoto .viewPhotos__link {
+  color: white; }
+  .SingleRoom__info--gallery .row .lastPhoto .viewPhotos__link:hover {
+    color: white;
+    text-decoration: underline; }
 
 .SingleRoom__booking {
-  border: 1px solid #ddd;
   margin-top: -65px; }
   .SingleRoom__booking form {
-    padding: 20px; }
+    padding: 20px;
+    border: 1px solid #ddd; }
 
 .SingleRoom__booking--header {
   color: white;

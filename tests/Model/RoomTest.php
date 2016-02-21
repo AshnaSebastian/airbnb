@@ -10,9 +10,11 @@ class RoomTest extends TestCase
 
     public function test_it_shows_all_the_rooms_per_country()
     {
-    	$country = factory(App\Country::class)->create();
+        $user = factory(App\User::class)->create();
+        $country = factory(App\Country::class)->create();
 
         $room = factory(App\Room::class)->create([
+            'user_id'   => $user->id,
             'country_id'    => $country->id
         ]);
 
@@ -23,7 +25,9 @@ class RoomTest extends TestCase
 
         $room->photos()->saveMany($photos);
 
-        $roomFromOtherCountry = factory(App\Room::class)->create();
+        $roomFromOtherCountry = factory(App\Room::class)->create([
+            'country_id'    => factory(App\Country::class)->create()->id,
+        ]);
 
     	$this->visit('/country/'.$country->slug.'/rooms')
     		->see($room->name)
@@ -32,7 +36,10 @@ class RoomTest extends TestCase
 
     public function test_view_a_selected_room()
     {
-        $room = factory(App\Room::class)->create();
+        $room = factory(App\Room::class)->create([
+            'user_id'   => factory(App\User::class)->create()->id,
+            'country_id'   => factory(App\Country::class)->create()->id
+        ]);
 
         $this->visit('/room/'.$room->slug)
             ->see($room->name); 

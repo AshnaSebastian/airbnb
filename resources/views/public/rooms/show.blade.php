@@ -232,7 +232,7 @@
 											<img src="{{ $photo->path }}" class="img-responsive" alt="{{ $room->name }}" title="{{ $room->name }}" />
 											@if( $photoCount == 5 )
 												<div class="viewPhotos">
-													<p><a href="#">View all {{ $photosCount }} photos</a></p>
+													<p><a href="#" class="viewPhotos__link">View all {{ $photosCount }} photos</a></p>
 												</div>
 											@endif
 										</div>	

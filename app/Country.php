@@ -13,6 +13,11 @@ class Country extends Model
 		return $this->hasMany(Room::class);
 	}
 
+	public function photos()
+	{
+		return $this->morphMany(Photo::class, 'imageable');
+	}
+
 	public function setNameAttribute($name)
 	{
 		$this->attributes['name'] = $name;

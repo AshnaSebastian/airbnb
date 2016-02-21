@@ -1,5 +1,11 @@
 var elixir = require('laravel-elixir');
 
+elixir.config.js.browserify.watchify = {
+    enabled: true,
+    options: {
+        poll: true
+    }
+}
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -16,9 +22,9 @@ var bowerPath = '../../../bower_components/';
 elixir(function(mix) {
     mix.sass('app.scss', 'resources/assets/css/app.css')
     	.styles([
-    		'app.css',
-    		bowerPath + 'bootstrap/dist/css/bootstrap.css',
-    		bowerPath + 'font-awesome/css/font-awesome.css'
+            bowerPath + 'bootstrap/dist/css/bootstrap.css',
+            bowerPath + 'font-awesome/css/font-awesome.css',
+    		'app.css'
     	], 'public/css/all.css')
 
     	.scripts([
@@ -36,16 +42,18 @@ elixir(function(mix) {
 
         .copy('bower_components/bootstrap/dist/fonts/', 'public/build/fonts')
         .copy('bower_components/font-awesome/fonts/', 'public/build/fonts')
-        .copy('bower_components/jquery-ui/themes/smoothness/images/', 'public/build/css/images')
+        .copy('bower_components/jquery-ui/themes/smoothness/images/', 'public/build/css/images');
 
-	.version([
-		'public/css/all.css',
-		'public/js/all.js',
+    mix.browserify('components/Countries.js');
+    mix.browserify('components/Bookingform.js');
+
+    mix.version([
+        'public/css/all.css',
+        'public/js/all.js',
 
         'public/css/datepicker.css',
         'public/js/datepicker.js',
-		]);
+        ]);
 
-    mix.browserify('components/Bookingform.js');
 
 });

@@ -11,20 +11,33 @@ class RoomTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Country::class)->create();
+        $countries = factory(App\Country::class, 10)->create();
         
-        $rooms = factory(App\Room::class, 10)->create([
-            'country_id'    => 1
-        ]);
+        foreach( $countries as $country )
+        {        
+            $photos = factory(App\Photo::class, 5)->make([
+                'imageable_id'  => $country->id,
+                'imageable_type'    => 'App\Country'
+            ]);
 
-        foreach( $rooms as $room )
-        {    	
-	        $photos = factory(App\Photo::class, 15)->make([
-	            'imageable_id'  => $room->id,
-	            'imageable_type'    => 'App\Room'
-	        ]);
+            $country->photos()->saveMany($photos);
 
-	        $room->photos()->saveMany($photos);
+            $user = factory(App\User::class)->create();
+            
+            $rooms = factory(App\Room::class, 10)->create([
+                'user_id'   => $user->id,
+                'country_id'    => $country->id
+            ]);
+
+            foreach( $rooms as $room )
+            {    	
+    	        $photos = factory(App\Photo::class, 10)->make([
+    	            'imageable_id'  => $room->id,
+    	            'imageable_type'    => 'App\Room'
+    	        ]);
+
+    	        $room->photos()->saveMany($photos);
+            }
         }
     }
 }

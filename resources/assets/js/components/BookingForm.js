@@ -24,7 +24,7 @@ var BookingForm = React.createClass({
 			showAnim: 'slideDown',
 			// altField: "#checkOut",
 			// altFormat: "yy-mm-dd",
-			onClose: function(selectedDate) {
+			onSelect: function(selectedDate) {
 				var checkOutMinDate = $('#checkIn').datepicker('getDate');
 				checkOutMinDate.setDate(checkOutMinDate.getDate() + window.room.minimum_stay);
 
@@ -47,7 +47,7 @@ var BookingForm = React.createClass({
 			numberOfMonths: 1,
 			dateFormat: 'yy-mm-dd',
 			showAnim: 'slideDown',
-			onClose: function( selectedDate ) {
+			onSelect: function( selectedDate ) {
 				this.setState({ 
 					checkOut: selectedDate
 				});

@@ -24,14 +24,14 @@
 }
 
 .Room__price {
-	position: absolute;
-	padding-left: 20px;
-	bottom: 30px;
-	background: rgba(0,0,0,0.5);
+    font-size: 22px;
     color: white;
-    padding: 10px 20px;
-    font-size: 26px;
     font-weight: normal;
+	bottom: 20px;
+	padding-left: 10px;
+    padding: 5px 10px;
+	position: absolute;
+	background: rgba(0,0,0,0.5);
 }
 
 .Room__user {
@@ -129,22 +129,22 @@
 			}
 		}
 		.lastPhoto {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
+			// display: flex;
+			// align-items: center;
+			// justify-content: center;
+			// flex-direction: column;
 			img { }
 			.viewPhotos {			
 				top: -70px;
 				position: relative;
-				p {
-					a {
-						color: white;
-						&:hover {
-							color: white;
-							text-decoration: underline;
-						}
-					}
+				text-align: center;
+			}
+
+			.viewPhotos__link {
+				color: white;
+				&:hover {
+					color: white;
+					text-decoration: underline;
 				}
 			}
 		}
@@ -152,10 +152,10 @@
 }
 
 .SingleRoom__booking {
-	border: 1px solid #ddd;
 	margin-top: -65px;
 	form {
 		padding: 20px;
+		border: 1px solid #ddd;
 	}
 }
 
