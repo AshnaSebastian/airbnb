@@ -1,8 +1,12 @@
 var elixir = require('laravel-elixir');
 
 // elixir.config.js.browserify.watchify = {
-//     enabled: true
+//     enabled: true,
+//     options: {
+//         poll: true
+//     }
 // }
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -21,12 +25,14 @@ elixir(function(mix) {
     	.styles([
             bowerPath + 'bootstrap/dist/css/bootstrap.css',
             bowerPath + 'font-awesome/css/font-awesome.css',
+            bowerPath + 'sweetalert/dist/sweetalert.css',
     		'app.css'
     	], 'public/css/all.css')
 
     	.scripts([
     		bowerPath + 'jquery/dist/jquery.js',
-    		bowerPath + 'bootstrap/dist/js/bootstrap.js'
+    		bowerPath + 'bootstrap/dist/js/bootstrap.js',
+            bowerPath + 'sweetalert/dist/sweetalert-dev.js'
     	], 'public/js/all.js')
 
         .styles([

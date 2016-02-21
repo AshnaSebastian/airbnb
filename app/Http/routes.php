@@ -13,6 +13,14 @@
 Route::group(['middleware' => ['web']], function () {
 	Route::auth();
 
+	Route::get('/', ['as' => 'home', 'uses' => 'CountriesController@index']);
+
+	Route::get('auth/github', 'Auth\SocialiteController@redirectToGithub');
+	Route::get('auth/github/callback', 'Auth\SocialiteController@handleGithubCallback');
+
+	Route::get('auth/facebook', 'Auth\SocialiteController@redirectToFacebook');
+	Route::get('auth/facebook/callback', 'Auth\SocialiteController@handleFacebookCallback');
+
 	Route::get('/home', 'HomeController@index');
 
 	Route::get('room/{room}', ['as' => 'room', 'uses' => 'RoomsController@show']);

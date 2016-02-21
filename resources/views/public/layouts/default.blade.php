@@ -13,6 +13,9 @@
     </head>
 
     <body class="@yield('bodyClass')">
+        
+        @yield('after_body')
+
         <header>
             @include('public.layouts._nav')
         </header>
@@ -20,3 +23,5 @@
         @yield('content')
 
         @include('public.layouts._footer')
+
+        @include('flash')

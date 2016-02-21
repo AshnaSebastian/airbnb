@@ -19046,7 +19046,8 @@ var BookingForm = React.createClass({
 			guests: 1,
 			totalDays: 0,
 			serviceFee: 8, //sample fee
-			total: 0
+			total: 0,
+			showTotal: false
 		};
 	},
 	componentDidMount: function componentDidMount() {
@@ -19055,10 +19056,8 @@ var BookingForm = React.createClass({
 			changeMonth: false,
 			numberOfMonths: 1,
 			dateFormat: 'yy-mm-dd',
-			minDate: 0, //Today's Date
+			minDate: 0, // Today's Date
 			showAnim: 'slideDown',
-			// altField: "#checkOut",
-			// altFormat: "yy-mm-dd",
 			onSelect: function (selectedDate) {
 				var checkOutMinDate = $('#checkIn').datepicker('getDate');
 				checkOutMinDate.setDate(checkOutMinDate.getDate() + window.room.minimum_stay);
@@ -19069,6 +19068,9 @@ var BookingForm = React.createClass({
 
 				if (this.state.checkOut !== '') {
 					this.calculateTotal();
+					this.setState({
+						showTotal: true
+					});
 				}
 
 				$("#checkOut").datepicker("option", "minDate", checkOutMinDate);
@@ -19082,7 +19084,8 @@ var BookingForm = React.createClass({
 			showAnim: 'slideDown',
 			onSelect: function (selectedDate) {
 				this.setState({
-					checkOut: selectedDate
+					checkOut: selectedDate,
+					showTotal: true
 				});
 				$("#checkIn").datepicker("option", "maxDate", selectedDate);
 
@@ -19106,6 +19109,18 @@ var BookingForm = React.createClass({
 	},
 	submitForm: function submitForm(e) {
 		e.preventDefault();
+
+		if (!window.signedIn) {
+			swal({
+				title: "Airbnb",
+				text: "You need to login before you can book a room.",
+				type: "error",
+				showConfirmButton: true,
+				confirmButtonText: 'Okay'
+			});
+
+			return false;
+		}
 
 		var url = '/bookings/' + window.room.id;
 		$.ajax({
@@ -19148,7 +19163,8 @@ var BookingForm = React.createClass({
 							'Check in'
 						),
 						React.createElement('input', { type: 'text', id: 'checkIn',
-							className: 'form-control', placeholder: 'yyyy-mm-dd' })
+							className: 'form-control',
+							placeholder: 'yyyy-mm-dd' })
 					)
 				),
 				React.createElement(
@@ -19163,7 +19179,8 @@ var BookingForm = React.createClass({
 							'Check out'
 						),
 						React.createElement('input', { type: 'text', id: 'checkOut',
-							className: 'form-control', placeholder: 'yyyy-mm-dd' })
+							className: 'form-control',
+							placeholder: 'yyyy-mm-dd' })
 					)
 				),
 				React.createElement(
@@ -19196,7 +19213,7 @@ var BookingForm = React.createClass({
 						)
 					)
 				),
-				React.createElement(
+				this.state.showTotal ? React.createElement(
 					'div',
 					{ className: 'col-xs-12 col-md-12' },
 					React.createElement(
@@ -19239,7 +19256,7 @@ var BookingForm = React.createClass({
 							)
 						)
 					)
-				),
+				) : '',
 				React.createElement(
 					'div',
 					{ className: 'col-xs-12 col-md-12' },

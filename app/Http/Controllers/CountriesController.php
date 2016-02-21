@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use JavaScript;
+use Laracasts\Flash\Flash;
 
 class CountriesController extends Controller
 {
