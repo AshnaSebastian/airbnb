@@ -6,7 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['user_id', 'country_id', 'name', 'slug', 'price'];
+    protected $fillable = [
+        'user_id', 
+        'country_id', 
+        'name', 
+        'slug', 
+        'price',
+        'aboutListing',
+        'propertyType',
+        'roomType',
+        'accommodates',
+        'bathrooms',
+        'bedType',
+        'bedrooms',
+        'beds',
+        'checkIn',
+        'checkOut',
+        'extraPeopleFee',
+        'cleaningFee',
+        'description',
+        'minimumStay'
+    ];
+
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = $name;
+        $this->attributes['slug'] = str_slug($name);
+    }
 
     public function photos()
     {
@@ -21,5 +47,10 @@ class Room extends Model
     public function country()
     {
     	return $this->belongsTo(Country::class);
+    }
+
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'room_amenities');
     }
 }

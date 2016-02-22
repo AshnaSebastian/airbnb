@@ -1,5 +1,6 @@
 <?php
 
+use App\Country;
 use Illuminate\Database\Seeder;
 
 class RoomTableSeeder extends Seeder
@@ -11,7 +12,7 @@ class RoomTableSeeder extends Seeder
      */
     public function run()
     {
-        $countries = factory(App\Country::class, 10)->create();
+        $countries = Country::all();
         
         foreach( $countries as $country )
         {        

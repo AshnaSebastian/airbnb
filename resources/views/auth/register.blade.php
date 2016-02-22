@@ -1,25 +1,4 @@
 @extends('public.layouts.default')
-
-@section('after_body')
-    <script>
-        window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '194447954250192',
-          xfbml      : true,
-          version    : 'v2.5'
-        });
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -89,17 +68,21 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-btn fa-user"></i>Register
+                                        <i class="fa fa-btn fa-user"></i> Register
                                     </button>
-
-                                    <a href="/auth/github">
-                                        <i class="fa fa-github fa-2x"></i>
-                                    </a>    
-
-                                    <a href="/auth/facebook">
-                                        <i class="fa fa-facebook-official fa-2x"></i>
-                                    </a>    
                                 </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="text-center">
+                                <a href="/auth/facebook" class="btn btn-default">
+                                    <i class="fa fa-facebook-official fa-2x"></i> Register with Facebook
+                                </a>    
+                                &nbsp;&nbsp;
+                                <a href="/auth/github" class="btn btn-default">
+                                    <i class="fa fa-github fa-2x"></i> Register with Github
+                                </a>    
                             </div>
                         </form>
                     </div>

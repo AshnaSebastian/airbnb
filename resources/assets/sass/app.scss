@@ -39,6 +39,10 @@ h1, h2, h3, h4, h5, h6 {
 	float: left;
 }
 
+footer {
+	margin-bottom: 100px;
+}
+
 @import 'components/Country';
 @import 'components/Room';
 @import 'components/Overwrite';

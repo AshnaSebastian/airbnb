@@ -11,7 +11,7 @@ use JavaScript;
 class RoomsController extends Controller
 {
     public function show($room)
-    {
+    {    	
     	JavaScript::put([
     		'signedIn' => Auth::check() ? true : false,
     		'room' => $room

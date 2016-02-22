@@ -37,7 +37,20 @@ $factory->define(App\Room::class, function (Faker\Generator $faker) {
         'name' => $faker->sentence,
         'slug'	=> $faker->slug,
         'price'	=> $faker->randomNumber(2),
-        'minimum_stay'  => 1
+        'aboutListing'  => $faker->paragraph,
+        'propertyType'  => 'Apartment',
+        'roomType'  => 'Private Room',
+        'accommodates'  => 2,
+        'bathrooms' => 1,
+        'bedType'  => 'Real Bed',
+        'bedrooms'  => 1,
+        'beds'  => 2,
+        'checkIn'   => '12:01 PM',
+        'checkOut'  => '11:59 AM',
+        'extraPeopleFee'    => 0,
+        'cleaningFee'  => 5,
+        'description' => $faker->paragraph,
+        'minimumStay'  => 1
     ];
 });
 

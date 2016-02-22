@@ -3,7 +3,7 @@
 		swal({
 			title: "Airbnb",  
 			text: "{{ session('flash_notification.message') }}",  
-			type: "{{ session('flash_notification.level') }}", 
+			type: "{{ session('flash_notification.level') == 'danger' ? 'error' : session('flash_notification.level') }}", 
 			 showConfirmButton: true,
 			 confirmButtonText: 'Okay'
 		});
