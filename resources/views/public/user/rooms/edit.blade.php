@@ -3,17 +3,18 @@
 @section('bodyClass', 'cream page')
 @section('content')
 	<div class="container">
-		<form method="POST" action="{{ route('user.rooms.store', Auth::user()->id) }}">
+		<form method="POST" action="{{ route('user.rooms.update', [Auth::user()->id, $room->id]) }}">
 			{!! csrf_field() !!}
+			{!! method_field('PUT') !!}
 			<div class="row">
 				<div class="col-md-12">
-					<h1 class="page__title">Add New Room</h1>
+					<h1 class="page__title">Update Room Information</h1>
 					<hr />
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Name</label>
-								<input type="text" name="name" class="form-control" placeholder="What's your room name?" />
+								<input type="text" name="name" class="form-control" value="{{ $room->name }}" placeholder="What's your room name?" />
 							</div>
 						</div>
 
@@ -22,7 +23,7 @@
 								<label>Price</label>
 								<div class="input-group">
 									<div class="input-group-addon">$</div>
-									<input type="text" name="price" class="form-control" placeholder="Price per night" />
+									<input type="text" name="price" class="form-control" value="{{ $room->price }}" placeholder="Price per night" />
 								</div>
 							</div>
 						</div>
@@ -94,7 +95,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Bed Type</label>
-								<input type="text" name="bedType" class="form-control" placeholder="Bed Type" />
+								<input type="text" name="bedType" class="form-control" value="{{ $room->bedType }}" placeholder="Bed Type" />
 							</div>
 						</div>
 
@@ -186,7 +187,7 @@
 						<label>Extra People</label>
 						<div class="input-group">
 							<div class="input-group-addon">$</div>
-							<input type="text" name="extraPeopleFee" class="form-control" placeholder="Extra People Fee" />
+							<input type="text" name="extraPeopleFee" class="form-control" value="{{ $room->extraPeopleFee }}" placeholder="Extra People Fee" />
 						</div>
 					</div>
 				</div>
@@ -196,7 +197,7 @@
 						<label>Cleaning Fee</label>
 						<div class="input-group">
 							<div class="input-group-addon">$</div>
-							<input type="text" name="cleaningFee" class="form-control" placeholder="Cleaning Fee" />
+							<input type="text" name="cleaningFee" class="form-control" value="{{ $room->cleaningFee }}" placeholder="Cleaning Fee" />
 						</div>
 					</div>
 				</div>
@@ -206,7 +207,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<button type="submit" name="submit" class="btn btn-primary btn-lg">Save Room Information</button>
+					<button type="submit" name="submit" class="btn btn-primary btn-lg">Update Room Information</button>
 				</div>
 			</div>
 		</form>

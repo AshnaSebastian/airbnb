@@ -8,7 +8,7 @@ import WhyVisit from './WhyVisit';
 var Countries = React.createClass({
 	getInitialState() {
 		return {
-			countries: window.countries
+			countries: window.countries,
 		}
 	},
 

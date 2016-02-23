@@ -11,6 +11,7 @@ use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laracasts\Flash\Flash;
+use JavaScript;
 
 class UserRoomsController extends Controller
 {
@@ -37,7 +38,7 @@ class UserRoomsController extends Controller
             'country_id'    => $countryId,
             'name' => $request->name,
             'price' => $request->price,
-            'aboutListing' => $request->aboutListing,
+            'aboutListing' => '',
             'propertyType' => $request->propertyType,
             'roomType' => $request->roomType,
             'accommodates' => $request->accommodates,
@@ -49,7 +50,7 @@ class UserRoomsController extends Controller
             'checkOut'  => $request->checkOut,
             'extraPeopleFee' => $request->extraPeopleFee,
             'cleaningFee' => $request->cleaningFee,
-            'description' => $request->description,
+            'description' => '',
             'minimumStay' => $request->minimumStay                
         ]);
 
@@ -67,13 +68,36 @@ class UserRoomsController extends Controller
         /**
          * Store room amenities
          */
-        foreach( $request->amenities as $amenity )
-        {
-            $room->amenities()->attach($amenity);
+        if( $request->has('amenities') )
+        {        
+            foreach( $request->amenities as $amenity )
+            {
+                $room->amenities()->attach($amenity);
+            }
         }
 
-        Flash::success('Hurray! Your room has been successfully added. Please add a photo on it.');
-        return redirect()->route('user.rooms.index', Auth::user()->id);
+        Flash::success('Hurray! Your room has been successfully added.');
+        return redirect()->route('room', $room->id);
+    }
+
+    public function show($user, $rooms)
+    {        
+        $room = $rooms;
+
+        JavaScript::put([
+            'signedIn' => Auth::check() ? true : false,
+            'room' => $room
+        ]);
+
+        return view('public.user.rooms.show', compact('user', 'room'));
+    }
+
+    public function edit($user, $rooms)
+    {
+        $room = $rooms;
+        $amenities = Amenity::all();
+        $countries = Country::all();
+        return view('public.user.rooms.edit', compact('user', 'room', 'countries', 'amenities'));
     }
 }
 

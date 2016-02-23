@@ -37,8 +37,7 @@ class UserRoomsTest extends TestCase
         $this->visit('/user/'.$user->id.'/rooms/create')
             ->type('Room Name', 'name')
             ->type('20', 'price')
-            ->select('0', 'country')
-            ->type('About this listing', 'aboutListing')
+            ->select($user->country->id, 'country')
             ->select('Apartment', 'propertyType')
             ->select('Private Room', 'roomType')
             ->type('1', 'accommodates')
@@ -46,20 +45,18 @@ class UserRoomsTest extends TestCase
             ->type('Real Bed', 'bedType')
             ->type('3', 'bedrooms')
             ->type('4', 'beds')
-            ->type('12:01 AM', 'checkIn')
-            ->type('11:59 PM', 'checkOut')
+            ->select('12:00 PM', 'checkIn')
+            ->select('11:30 AM', 'checkOut')
             ->type('0', 'extraPeopleFee')
             ->type('5', 'cleaningFee')
-            ->type('Room Description', 'description')
             ->select('2', 'minimumStay')
             ->press('Save Room Information')
             ->seeInDatabase('rooms', [
                 'user_id'   => $user->id,
-                'country_id'   => 1,
                 'name' => 'Room Name',
                 'slug'  => 'room-name',
                 'price' => 20,
-                'aboutListing' => 'About this listing',
+                'aboutListing' => '',
                 'propertyType'  => 'Apartment',
                 'roomType'  => 'Private Room',
                 'accommodates'  =>  1,
@@ -67,16 +64,17 @@ class UserRoomsTest extends TestCase
                 'bedType'   => 'Real Bed',
                 'bedrooms'  => 3,
                 'beds'  => 4,
-                'checkIn'   => '12:01 AM',
-                'checkOut'  => '11:59 PM',
+                'checkIn'   => '12:00 PM',
+                'checkOut'  => '11:30 AM',
                 'extraPeopleFee'    => 0,
                 'cleaningFee'   => 5,
-                'description'   => 'Room Description',
+                'description'   => '',
                 'minimumStay'   => 2
             ])
             ->seeInDatabase('photos', [
                 'imageable_id'  => 1,
                 'imageable_type'    => 'App\Room'
             ])
+            ->seePageIs('/room/1');
     }
 }

@@ -10,7 +10,7 @@ class Country extends Model
 
 	public function rooms()
 	{
-		return $this->hasMany(Room::class);
+		return $this->hasManyThrough(Room::class, User::class);
 	}
 
 	public function photos()

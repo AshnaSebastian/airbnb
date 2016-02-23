@@ -65,7 +65,7 @@ var BookingForm = React.createClass({
 	{
 		var roomPrice = window.room.price;
 
-		var url = '/total-stay-days/' + this.state.checkOut + '/' + this.state.checkIn;
+		var url = '/api/total-stay-days/' + this.state.checkOut + '/' + this.state.checkIn;
 		$.get(url, function(response) {
 			this.setState({
 				totalDays: response,

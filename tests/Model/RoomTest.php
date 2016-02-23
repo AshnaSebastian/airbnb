@@ -10,13 +10,10 @@ class RoomTest extends TestCase
 
     public function test_it_shows_all_the_rooms_per_country()
     {
-        $user = factory(App\User::class)->create();
-        $country = factory(App\Country::class)->create();
-
-        $room = factory(App\Room::class)->create([
-            'user_id'   => $user->id,
-            'country_id'    => $country->id
-        ]);
+        $user = factory(App\User::class)->create();        
+        $roomData = factory(App\Room::class)->make();
+        
+        $room = $user->rooms()->save($roomData);
 
         $photos = factory(App\Photo::class, 5)->make([
             'imageable_id'  => $room->id,
@@ -25,23 +22,24 @@ class RoomTest extends TestCase
 
         $room->photos()->saveMany($photos);
 
-        $roomFromOtherCountry = factory(App\Room::class)->create([
-            'country_id'    => factory(App\Country::class)->create()->id,
-        ]);
+        $OtherUser = factory(App\User::class)->create();
+        $otherRoomData = factory(App\Room::class)->make();
 
-    	$this->visit('/country/'.$country->slug.'/rooms')
+        $otherRoom = $OtherUser->rooms()->save($otherRoomData);
+
+    	$this->visit('/country/'.$user->country->slug.'/rooms')
     		->see($room->name)
-            ->dontSee($roomFromOtherCountry->name);
+            ->dontSee($otherRoom->name);
     }
 
     public function test_view_a_selected_room()
     {
-        $room = factory(App\Room::class)->create([
-            'user_id'   => factory(App\User::class)->create()->id,
-            'country_id'   => factory(App\Country::class)->create()->id
-        ]);
+        $user = factory(App\User::class)->create();
+        $room = factory(App\Room::class)->make();
 
-        $this->visit('/room/'.$room->slug)
+        $room = $user->rooms()->save($room);
+
+        $this->visit('/room/'.$room->id)
             ->see($room->name); 
     }
 }

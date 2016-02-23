@@ -10,9 +10,12 @@ class CountryTest extends TestCase
 	
     public function test_is_shows_all_the_countries()
     {
-    	$country = factory(App\Country::class)->create();
+    	$user = factory(App\User::class)->create();
+    	$roomData = factory(App\Room::class)->make();
+
+    	$room = $user->rooms()->save($roomData);
 
     	$this->visit('/countries')
-    		->see($country->name);
+    		->see($room->name);
     }
 }

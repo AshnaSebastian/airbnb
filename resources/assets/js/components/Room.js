@@ -4,7 +4,7 @@ import Gallery from './Gallery';
 
 var Room = React.createClass({
 	render() {
-		var roomUrl = '/room/' + this.props.room.slug;
+		var roomUrl = '/room/' + this.props.room.id;
 
 		return (
 			<div className="Room">

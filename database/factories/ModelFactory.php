@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -13,6 +14,7 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
+        'country_id'    => factory(App\Country::class)->create()->id,
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => bcrypt(str_random(10)),
@@ -33,7 +35,6 @@ $factory->define(App\Country::class, function (Faker\Generator $faker) {
 $factory->define(App\Room::class, function (Faker\Generator $faker) {
     return [
         'user_id'   => 1,
-        'country_id'    => 1,
         'name' => $faker->sentence,
         'slug'	=> $faker->slug,
         'price'	=> $faker->randomNumber(2),

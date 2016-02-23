@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCountryIdForeignKeyInRoomsTable extends Migration
+class AddCountryIdInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddCountryIdForeignKeyInRoomsTable extends Migration
      */
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->integer('country_id')->unsigned()->after('user_id')->default(1);
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('country_id')->unsigned()->after('id');
             $table->foreign('country_id')->references('id')->on('countries');
         });
     }
@@ -25,8 +25,7 @@ class AddCountryIdForeignKeyInRoomsTable extends Migration
      */
     public function down()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->dropForeign('rooms_country_id_foreign');
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('country_id');
         });
     }

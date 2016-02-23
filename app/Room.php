@@ -8,7 +8,6 @@ class Room extends Model
 {
     protected $fillable = [
         'user_id', 
-        'country_id', 
         'name', 
         'slug', 
         'price',
@@ -44,11 +43,6 @@ class Room extends Model
     	return $this->belongsTo(User::class);
     }
     
-    public function country()
-    {
-    	return $this->belongsTo(Country::class);
-    }
-
     public function amenities()
     {
         return $this->belongsToMany(Amenity::class, 'room_amenities');

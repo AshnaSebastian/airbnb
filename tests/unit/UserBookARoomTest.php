@@ -40,11 +40,8 @@ class UserBookARoomTest extends TestCase
     public function test_a_user_can_book_a_room_with_incorrect_minimum_stay()
     {
     	$user = factory(App\User::class)->create([]);
-        $country = factory(App\Country::class)->create([]);
-
     	$room = factory(App\Room::class)->create([
             'user_id'   => $user->id,
-            'country_id'    => $country->id,
             'minimumStay'  => 3
         ]);
 

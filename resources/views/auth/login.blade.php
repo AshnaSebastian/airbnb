@@ -57,6 +57,18 @@
                                 <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
                             </div>
                         </div>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <a href="/auth/facebook" class="btn btn-default">
+                                <i class="fa fa-facebook-official fa-2x"></i> Login with Facebook
+                            </a>    
+                            &nbsp;&nbsp;
+                            <a href="/auth/github" class="btn btn-default">
+                                <i class="fa fa-github fa-2x"></i> Login with Github
+                            </a>    
+                        </div>
                     </form>
                 </div>
             </div>

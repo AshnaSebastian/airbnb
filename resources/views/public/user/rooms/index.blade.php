@@ -1,12 +1,12 @@
 @extends('public.layouts.default')
 
-@section('bodyClass', 'cream')
+@section('bodyClass', 'cream page')
 
 @section('content')
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h1>Rooms <span><a href="/user/{{ $user->id }}/rooms/create" class="btn btn-default">Add Room</a></span></h1>
+				<h1 class="page__title">Rooms <span><a href="/user/{{ $user->id }}/rooms/create" class="btn btn-default">Add Room</a></span></h1>
 				<ul class="list-group">
 					@foreach( $rooms as $room )
 					<li class="list-group-item">
@@ -16,7 +16,11 @@
 							</div>
 
 							<div class="col-md-9">
-								<h4>{{ $room->name }}</h4>
+								<h4>
+									<a href="{{ route('room', $room->id) }}">
+										{{ $room->name }}
+									</a>
+								</h4>
 							</div>
 						</div>
 					</li>

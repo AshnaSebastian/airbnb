@@ -13,8 +13,8 @@ class CountriesController extends Controller
 {
 	public function index()
 	{
-		$countries = Country::with('rooms.user', 'rooms.photos', 'photos')->take(10)->get();
-	
+		$countries = Country::with('rooms.user', 'rooms.photos', 'photos')->take(2)->get();
+
 		JavaScript::put([
 			'countries'	=> $countries
 		]);
@@ -23,11 +23,10 @@ class CountriesController extends Controller
 	}
 
     public function rooms($country)
-    {    	
+    {    	    	
     	$rooms = $country->rooms;
 		
 		JavaScript::put([
-			'country'	=> $country,
 			'rooms'	=> $rooms
 		]);
 

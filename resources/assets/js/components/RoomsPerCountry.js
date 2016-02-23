@@ -6,7 +6,6 @@ import Room from './Room';
 var RoomsPerCountry = React.createClass({
 	getInitialState() {
 		return {
-			country: window.country,
 			rooms: window.rooms
 		}
 	},

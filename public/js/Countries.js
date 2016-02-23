@@ -19247,7 +19247,7 @@ var React = require('react');
 var Room = React.createClass({
 	displayName: 'Room',
 	render: function render() {
-		var roomUrl = '/room/' + this.props.room.slug;
+		var roomUrl = '/room/' + this.props.room.id;
 
 		return React.createElement(
 			'div',

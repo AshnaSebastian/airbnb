@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="SingleRoom__description row">
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="SingleRoom__user">
 									<img src="http://www.avatarsdb.com/avatars/Shailene_here_i_am.jpg" 
 									width="100" height="100"
@@ -22,33 +22,26 @@
 							</div>
 							<div class="col-md-9">
 								<h1 class="SingleRoom__name">{{ $room->name }}</h1>
-								<h3 class="SigleRoom__country">{{ $room->country->name }}</h3>
+								<h3 class="SigleRoom__country">{{ $room->user->country->name }}</h3>
 								<div class="SingleRoom__includes row">
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
-											<i class="fa fa-users fa-2x"></i>
-											Entire home/apt
+											<span class=" glyphicon glyphicon-home fa-2x"></span>
+											{{ $room->roomType }}
 										</p>
 									</div>
 
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
 											<i class="fa fa-users fa-2x"></i>
-											2 Guests
+											{{ $room->accommodates }} Guest{{ $room->accommodates > 1 ? 's' : '' }}
 										</p>
 									</div>
 
 									<div class="col-xs-6 col-md-3">
 										<p class="text-center">
-											<i class="fa fa-users fa-2x"></i>
-											1 Bedroom
-										</p>
-									</div>
-
-									<div class="col-xs-6 col-md-3">
-										<p class="text-center">
-											<i class="fa fa-users fa-2x"></i>
-											1 Bed
+											<i class="fa fa-bed fa-2x"></i>
+											{{ $room->beds }} Bed{{ $room->beds > 1 ? 's' : '' }}
 										</p>
 									</div>
 								</div>
@@ -68,9 +61,7 @@
 									</div>
 								</div>
 							</div>
-
 							<div id="BookingForm"></div>
-
 						</div>
 					</div>
 				</div>
@@ -80,15 +71,15 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8">
-						<h2>About this listing</h2>
-						<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						</p>
+						<h2>About this listing 
+							@can('edit', $room)
+								<span class="float-right">
+									<a href="{{ route('user.rooms.edit', [Auth::user()->id, $room->id]) }}" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> Edit Room</a>
+								</span>
+							@endcan
+						</h2>
+						{!! $room->aboutListing == '' ? 'Empty' : $room->aboutListing !!}
+						<p>&nbsp;</p>
 						<p><strong><a href="#">Contact Host</a></strong></p>
 
 						<div class="SingleRoom__info">
@@ -101,19 +92,21 @@
 										<div class="row">
 											<div class="col-md-6">
 												<ul>
-													<li>Accomodates: <strong>2</strong></li>
-													<li>Bathrooms: <strong>1</strong></li>
-													<li>Bed Type: <strong>Real Bed</strong></li>
-													<li>Bedrooms: <strong>1</strong></li>
-													<li>Beds: <strong>1</strong></li>
+													<li>Accomodates: 
+														<strong>{{ $room->accommodates }} Guest{{ $room->accommodates > 1 ? 's' : '' }}</strong>
+													</li>
+													<li>Bathrooms: <strong>{{ $room->bathrooms }}</strong></li>
+													<li>Bed Type: <strong>{{ $room->bedType }}</strong></li>
+													<li>Bedrooms: <strong>{{ $room->bedrooms }}</strong></li>
+													<li>Beds: <strong>{{ $room->beds }}</strong></li>
 												</ul>
 											</div>
 											<div class="col-md-6">
 												<ul>
-													<li>Check In: <strong>3:00 PM</strong></li>
-													<li>Check Out: <strong>12:00 PM(noon)</strong></li>
-													<li>Property Type: <strong>Apartment</strong></li>
-													<li>Room Type: <strong>Entire home/apt</strong></li>
+													<li>Check In: <strong>{{ $room->checkIn }}</strong></li>
+													<li>Check Out: <strong>{{ $room->checkOut }}</strong></li>
+													<li>Property Type: <strong>{{ $room->propertyType }}</strong></li>
+													<li>Room Type: <strong>{{ $room->roomType }}</strong></li>
 												</ul>
 											</div>
 										</div>
@@ -127,23 +120,21 @@
 									</div>
 									<div class="col-md-9">
 										<div class="row">
-											<div class="col-md-6">
-												<ul>
-													<li>Accomodates: <strong>2</strong></li>
-													<li>Bathrooms: <strong>1</strong></li>
-													<li>Bed Type: <strong>Real Bed</strong></li>
-													<li>Bedrooms: <strong>1</strong></li>
-													<li>Beds: <strong>1</strong></li>
-												</ul>
-											</div>
-											<div class="col-md-6">
-												<ul>
-													<li>Check In: <strong>3:00 PM</strong></li>
-													<li>Check Out: <strong>12:00 PM(noon)</strong></li>
-													<li>Property Type: <strong>Apartment</strong></li>
-													<li>Room Type: <strong>Entire home/apt</strong></li>
-												</ul>	
-											</div>
+											@foreach( $amenities->chunk(15) as $chunks )
+												<div class="col-xs-6 col-md-6">
+													<ul>
+													@foreach( $chunks as $amenity )
+														<?php $class="text-muted striked"; ?>
+														@foreach( $room->amenities as $roomAmenity )
+															@if( $amenity->id === $roomAmenity->id)
+																<?php $class="bold"; ?>
+															@endif
+														@endforeach	
+														<li class="{{ $class }}">{{ $amenity->name }}</li>
+													@endforeach
+													</ul>
+												</div>
+											@endforeach	
 										</div>
 									</div>
 								</div>	
@@ -157,19 +148,21 @@
 										<div class="row">
 											<div class="col-md-6">
 												<ul>
-													<li>Accomodates: <strong>2</strong></li>
-													<li>Bathrooms: <strong>1</strong></li>
-													<li>Bed Type: <strong>Real Bed</strong></li>
-													<li>Bedrooms: <strong>1</strong></li>
-													<li>Beds: <strong>1</strong></li>
+													<li>Extra people: 
+														<strong>
+															{{ $room->extraPeopleFee == 0 ? 'No Charge' :  '$' . $room->extraPeopleFee }}
+														</strong>
+													</li>
+													<li>Cleaning fee: 
+														<strong>
+															${{ $room->cleaningFee }}
+														</strong>
+													</li>
 												</ul>
 											</div>
 											<div class="col-md-6">
 												<ul>
-													<li>Check In: <strong>3:00 PM</strong></li>
-													<li>Check Out: <strong>12:00 PM(noon)</strong></li>
-													<li>Property Type: <strong>Apartment</strong></li>
-													<li>Room Type: <strong>Entire home/apt</strong></li>
+													<li>Cancellation: <strong><a href="#">Strict</a></strong></li>
 												</ul>	
 											</div>
 										</div>
@@ -183,13 +176,7 @@
 									</div>
 									<div class="col-md-9">
 										<h4>The Space</h4>
-										<p>
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-										consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-										cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-										proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{!! $room->description == '' ? 'Empty' : $room->description !!}
 										</p>
 									</div>
 								</div>	
@@ -200,23 +187,42 @@
 										<p>House Rules</p>
 									</div>
 									<div class="col-md-9">
-										<ul>
-											<li>Accomodates: <strong>2</strong></li>
-											<li>Bathrooms: <strong>1</strong></li>
-											<li>Bed Type: <strong>Real Bed</strong></li>
-											<li>Bedrooms: <strong>1</strong></li>
-											<li>Beds: <strong>1</strong></li>
-										</ul>
 									</div>
 								</div>	
 							</div>
+
+							<div class="SingleRoom__info--each">
+								<div class="row">
+									<div class="col-md-3">
+										<p>Safety Features</p>
+									</div>
+									<div class="col-md-9">
+									</div>
+								</div>	
+							</div>
+
 							<div class="SingleRoom__info--each">
 								<div class="row">
 									<div class="col-md-3">
 										<p>Availability</p>
 									</div>
 									<div class="col-md-9">
-										<p><strong>2 nights</strong> minimum stay</p>
+										<div class="row">
+											<div class="col-md-6">
+												<ul>
+													<li>
+														<strong>2 nights</strong> minimum stay
+													</li>
+												</ul>
+											</div>
+											<div class="col-md-6">
+												<ul>
+													<li>
+														<a href="#"><strong>View Calendar</strong></a>
+													</li>
+												</ul>
+											</div>
+										</div>
 									</div>
 								</div>	
 							</div>
@@ -243,7 +249,6 @@
 									@endforeach
 								</div>								
 							</div>
-
 						</div>
 					</div>
 				</div>
