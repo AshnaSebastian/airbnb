@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserRoomsTest extends TestCase
 {
-	use DatabaseMigrations;
+    use DatabaseMigrations;
 
     public function test_a_user_can_view_all_his_or_her_posted_rooms()
     {
@@ -37,7 +37,6 @@ class UserRoomsTest extends TestCase
         $this->visit('/user/'.$user->id.'/rooms/create')
             ->type('Room Name', 'name')
             ->type('20', 'price')
-            ->select($user->country->id, 'country')
             ->select('Apartment', 'propertyType')
             ->select('Private Room', 'roomType')
             ->type('1', 'accommodates')
@@ -76,5 +75,54 @@ class UserRoomsTest extends TestCase
                 'imageable_type'    => 'App\Room'
             ])
             ->seePageIs('/room/1');
+    }
+
+    public function test_a_user_can_update_a_room_record()
+    {
+        $user = factory(App\User::class)->create();
+        $this->actingAs($user);
+
+        $roomData = factory(App\Room::class)->make();
+        $room = $user->rooms()->save($roomData);
+
+        $this->visit('/user/'.$user->id.'/rooms/'.$room->id.'/edit')
+            ->type('Updated Room Name', 'name')
+            ->type('1', 'price')
+            ->type('About this listing', 'aboutListing')
+            ->select('Apartment', 'propertyType')
+            ->select('Private Room', 'roomType')
+            ->type('1', 'accommodates')
+            ->type('1', 'bathrooms')
+            ->type('Updated Real Bed', 'bedType')
+            ->type('1', 'bedrooms')
+            ->type('1', 'beds')
+            ->select('12:00 PM', 'checkIn')
+            ->select('11:30 AM', 'checkOut')
+            ->type('1', 'extraPeopleFee')
+            ->type('1', 'cleaningFee')
+            ->select('1', 'minimumStay')
+            ->type('Room description', 'description')
+            ->press('Update Room Information')
+            ->seeInDatabase('rooms', [
+                'user_id'   => $user->id,
+                'name' => 'Updated Room Name',
+                'slug'  => 'updated-room-name',
+                'price' => 1,
+                'aboutListing' => 'About this listing',
+                'propertyType'  => 'Apartment',
+                'roomType'  => 'Private Room',
+                'accommodates'  =>  1,
+                'bathrooms' => 1,
+                'bedType'   => 'Updated Real Bed',
+                'bedrooms'  => 1,
+                'beds'  => 1,
+                'checkIn'   => '12:00 PM',
+                'checkOut'  => '11:30 AM',
+                'extraPeopleFee'    => 1,
+                'cleaningFee'   => 1,
+                'minimumStay'   => 1,
+                'description'   => 'Room description'
+            ])
+            ->seePageIs('/room/'.$room->id);
     }
 }

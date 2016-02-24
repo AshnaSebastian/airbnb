@@ -27,11 +27,11 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->bind('rooms', function($rooms) {
-            return Room::with('user.country', 'photos')->findOrFail($rooms);
+            return Room::with('user.country', 'photos', 'amenities')->findOrFail($rooms);
         });
 
         $this->bind('country', function($country) {
-            return Country::with('rooms.user', 'rooms.photos', 'photos')->whereSlug($country)->first();
+            return Country::with('rooms.user', 'rooms.photos', 'rooms.amenities', 'photos')->whereSlug($country)->first();
         });
 
         parent::boot($router);

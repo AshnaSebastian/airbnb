@@ -25,7 +25,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Country::class, function (Faker\Generator $faker) {
     $country = $faker->country;
     $slug = str_slug($country);
-
     return [
         'name' => $country,
         'slug'  => $slug
@@ -52,6 +51,12 @@ $factory->define(App\Room::class, function (Faker\Generator $faker) {
         'cleaningFee'  => 5,
         'description' => $faker->paragraph,
         'minimumStay'  => 1
+    ];
+});
+
+$factory->define(App\Amenity::class, function(Faker\Generator $faker) {
+    return [
+        'name'  => $faker->sentence
     ];
 });
 

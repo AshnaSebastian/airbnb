@@ -3,6 +3,9 @@
 @section('bodyClass', 'cream page')
 @section('content')
 	<div class="container">
+		
+		<div id="RoomInformationForm"></div>
+
 		<form method="POST" action="{{ route('user.rooms.update', [Auth::user()->id, $room->id]) }}">
 			{!! csrf_field() !!}
 			{!! method_field('PUT') !!}
@@ -30,15 +33,19 @@
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label>Where is it located?</label>						
-								<select name="country" class="form-control">
-									<option value="0"></option>
-									@foreach( $countries as $country )
-										<option value="{{ $country->id }}">{{ $country->name }}</option>
-									@endforeach
-								</select>	
-							</div>
+								<label>Minimum Stay</label>
+								<select name="minimumStay" class="form-control">
+									@foreach( range(1, 5) as $index )
+										<option value="{{ $index }}">{{ $index }} day{{ $index == 1 ? '' : 's'}}</option>
+									@endforeach	
+								</select>
+							</div>		
 						</div>
+					</div>
+
+					<div class="form-group">
+						<label>About this listing</label>
+						<textarea name="aboutListing" rows="10" class="form-control" placeholder="Brief description of the room"></textarea>
 					</div>
 					
 					<div class="row">
@@ -154,32 +161,14 @@
 					<hr />
 				</div>
 
-				@foreach( $amenities as $amenity )
-					<div class="col-xs-6 col-md-3">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" /> {{ $amenity->name }}
-							</label>
-						</div>
-					</div>
-				@endforeach	
+				<div id="RoomAmenities"></div>
+
 			</div>
 
 			<div class="row">
 				<div class="col-md-12">
 					<h3>Prices</h3>
 					<hr />
-				</div>
-
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Minimum Stay</label>
-						<select name="minimumStay" class="form-control">
-							@foreach( range(1, 5) as $index )
-								<option value="{{ $index }}">{{ $index }} day{{ $index == 1 ? '' : 's'}}</option>
-							@endforeach	
-						</select>
-					</div>		
 				</div>
 
 				<div class="col-md-3">
@@ -203,6 +192,11 @@
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label>Description</label>
+				<textarea name="description" rows="10" class="form-control" placeholder="Description of the room"></textarea>
+			</div>
+
 			<hr />
 
 			<div class="row">
@@ -215,5 +209,6 @@
 @endsection
 
 @section('footer_scripts')
-
+	<script src="/js/RoomInformationForm.js"></script>
+	<script src="/js/RoomAmenities.js"></script>
 @endsection	

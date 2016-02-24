@@ -56,6 +56,7 @@ class SocialiteController extends Controller
         ]);
 
         Auth::login($createUser);
+        Flash::success(sprintf('%s, %s', 'Hey ' . $createUser->name, ' welcome :)'));
         return redirect()->route('home');
     }
 }

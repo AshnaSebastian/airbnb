@@ -2,8 +2,17 @@
 
 use Torann\GeoIP\GeoIP;
 
-Route::get('test', function(GeoIP $location){	
-	return database_path('database.sqlite');
+Route::get('test', function(GeoIP $location)
+{	
+	$currentRoomAmenities = collect([1, 5]); //current room amenities
+	$selectedAmenities = collect([1]);
+
+	$difference = $currentRoomAmenities->diff($selectedAmenities);
+	
+	dd($currentRoomAmenities, $selectedAmenities, $difference);
+
+	return $selectedAmenities->all();
+
 });
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +47,5 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
 Route::group(['middleware' => 'api', 'prefix' => 'api'], function(){
 	Route::get('total-stay-days/{checkOut}/{checkIn}', 'Api\BookingsController@getTotalStayDays');
+	Route::put('/room/{rooms}/amenities/{amenity}', 'Api\RoomAmenitiesController@update');
 });

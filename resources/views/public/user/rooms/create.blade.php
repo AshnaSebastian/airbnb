@@ -29,14 +29,13 @@
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label>Where is it located?</label>						
-								<select name="country" class="form-control">
-									<option value="0"></option>
-									@foreach( $countries as $country )
-										<option value="{{ $country->id }}">{{ $country->name }}</option>
-									@endforeach
-								</select>	
-							</div>
+								<label>Minimum Stay</label>
+								<select name="minimumStay" class="form-control">
+									@foreach( range(1, 5) as $index )
+										<option value="{{ $index }}">{{ $index }} day{{ $index == 1 ? '' : 's'}}</option>
+									@endforeach	
+								</select>
+							</div>		
 						</div>
 					</div>
 					
@@ -168,17 +167,6 @@
 				<div class="col-md-12">
 					<h3>Prices</h3>
 					<hr />
-				</div>
-
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Minimum Stay</label>
-						<select name="minimumStay" class="form-control">
-							@foreach( range(1, 5) as $index )
-								<option value="{{ $index }}">{{ $index }} day{{ $index == 1 ? '' : 's'}}</option>
-							@endforeach	
-						</select>
-					</div>		
 				</div>
 
 				<div class="col-md-3">

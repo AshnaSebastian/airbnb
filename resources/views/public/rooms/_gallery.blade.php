@@ -3,7 +3,7 @@
 		<?php $count = 1; ?>
 		@foreach( $photos as $photo )
 			<div class="item {{ $count == 1 ? 'active' : '' }}">
-				<a href="{{ route('room', $room->slug) }}">
+				<a href="{{ route('room', $room->id) }}">
 					<img src="{{ $photo->path }}" class="img-responsive" alt="" />
 				</a>
 			</div>

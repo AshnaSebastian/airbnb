@@ -13,9 +13,9 @@ class BookingTest extends TestCase
         $checkOut = '2016-02-20';
         $checkIn = '2016-02-18';
 
-        $url = '/total-stay-days/'.$checkOut.'/'.$checkIn;
+        $url = '/api/total-stay-days/'.$checkOut.'/'.$checkIn;
         $response = $this->call('GET', $url, []);        
-        
+       
         $this->assertEquals(2, $response->content());
     }
 }

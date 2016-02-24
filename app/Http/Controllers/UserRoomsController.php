@@ -32,10 +32,7 @@ class UserRoomsController extends Controller
 
     public function store(Request $request)
     {
-        $countryId = $request->country == 0 ? 1 : $request->country;
-
         $newRoom = new Room([
-            'country_id'    => $countryId,
             'name' => $request->name,
             'price' => $request->price,
             'aboutListing' => '',
@@ -70,10 +67,8 @@ class UserRoomsController extends Controller
          */
         if( $request->has('amenities') )
         {        
-            foreach( $request->amenities as $amenity )
-            {
-                $room->amenities()->attach($amenity);
-            }
+            $amenities = collect($request->amenities)->all();
+            $room->amenities()->attach($amenities);
         }
 
         Flash::success('Hurray! Your room has been successfully added.');
@@ -96,8 +91,45 @@ class UserRoomsController extends Controller
     {
         $room = $rooms;
         $amenities = Amenity::all();
-        $countries = Country::all();
-        return view('public.user.rooms.edit', compact('user', 'room', 'countries', 'amenities'));
+
+        JavaScript::put([
+            'user'  => $user,
+            'amenities' => $amenities,
+            'room'  => $room
+        ]);
+
+        return view('public.user.rooms.edit', compact('user', 'room', 'amenities'));
+    }
+
+    public function update(Request $request, $user, $room)
+    {
+        if( $request->user()->can('edit', $room) )
+        {        
+            $room = Room::findOrFail($room->id);
+            $room->name = $request->name;
+            $room->price = $request->price;
+            $room->aboutListing = $request->aboutListing;
+            $room->propertyType = $request->propertyType;
+            $room->roomType = $request->roomType;
+            $room->accommodates = $request->accommodates;
+            $room->bathrooms = $request->bathrooms;
+            $room->bedType = $request->bedType;
+            $room->bedrooms = $request->bedrooms;
+            $room->beds = $request->beds;
+            $room->checkIn = $request->checkIn;
+            $room->checkOut  = $request->checkOut;
+            $room->extraPeopleFee = $request->extraPeopleFee;
+            $room->cleaningFee = $request->cleaningFee;
+            $room->description = $request->description;
+            $room->minimumStay = $request->minimumStay;
+            $room->save();
+
+            Flash::success('Hurray! Your room has been successfully updated.');
+            return redirect()->route('room', $room->id);
+        }
+
+        Flash::success('Catch ya!');
+        return redirect()->back();
     }
 }
 

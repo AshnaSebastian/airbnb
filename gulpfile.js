@@ -1,11 +1,11 @@
 var elixir = require('laravel-elixir');
 
-// elixir.config.js.browserify.watchify = {
-//     enabled: true,
-//     options: {
-//         poll: true
-//     }
-// }
+elixir.config.js.browserify.watchify = {
+    enabled: true,
+    options: {
+        poll: true
+    }
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -48,8 +48,10 @@ elixir(function(mix) {
         .copy('bower_components/jquery-ui/themes/smoothness/images/', 'public/build/css/images');
 
     mix.browserify('components/Countries.js');
-     mix.browserify('components/RoomsPerCountry.js');
+    mix.browserify('components/RoomsPerCountry.js');
+    mix.browserify('components/RoomInformationForm.js');
     mix.browserify('components/Bookingform.js');
+    mix.browserify('components/RoomAmenities.js');
 
     mix.version([
         'public/css/all.css',
