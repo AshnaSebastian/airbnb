@@ -8,17 +8,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Photo;
 use App\Room;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laracasts\Flash\Flash;
 use JavaScript;
+use Laracasts\Flash\Flash;
 
 class UserRoomsController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Auth::user();
+    }
+
     public function index()
     {
-    	$user = Auth::user();
-    	$rooms = Auth::user()->rooms;
+    	$user = $this->user;
+    	$rooms = $this->user->rooms;
     
     	return view('public.user.rooms.index', compact('user', 'rooms'));
     }
@@ -27,6 +35,11 @@ class UserRoomsController extends Controller
     {
         $amenities = Amenity::all();
         $countries = Country::all();
+
+        JavaScript::put([
+            'room'  => []
+        ]);
+
     	return view('public.user.rooms.create', compact('amenities', 'countries'));
     }
 
@@ -54,7 +67,7 @@ class UserRoomsController extends Controller
         /**
          * Store new room data
          */
-        $room = Auth::user()->rooms()->save($newRoom);
+        $room = $this->user->rooms()->save($newRoom);
 
         $photo = new Photo([
             'path'  => 'http://lorempixel.com/1400/720'
@@ -75,9 +88,10 @@ class UserRoomsController extends Controller
         return redirect()->route('room', $room->id);
     }
 
-    public function show($user, $rooms)
+    public function show(Room $rooms)
     {        
         $room = $rooms;
+        $user = $this->user;
 
         JavaScript::put([
             'signedIn' => Auth::check() ? true : false,
@@ -87,9 +101,10 @@ class UserRoomsController extends Controller
         return view('public.user.rooms.show', compact('user', 'room'));
     }
 
-    public function edit($user, $rooms)
+    public function edit(Room $rooms)
     {
         $room = $rooms;
+        $user = $this->user;
         $amenities = Amenity::all();
 
         JavaScript::put([
@@ -101,35 +116,33 @@ class UserRoomsController extends Controller
         return view('public.user.rooms.edit', compact('user', 'room', 'amenities'));
     }
 
-    public function update(Request $request, $user, $room)
-    {
-        if( $request->user()->can('edit', $room) )
-        {        
-            $room = Room::findOrFail($room->id);
-            $room->name = $request->name;
-            $room->price = $request->price;
-            $room->aboutListing = $request->aboutListing;
-            $room->propertyType = $request->propertyType;
-            $room->roomType = $request->roomType;
-            $room->accommodates = $request->accommodates;
-            $room->bathrooms = $request->bathrooms;
-            $room->bedType = $request->bedType;
-            $room->bedrooms = $request->bedrooms;
-            $room->beds = $request->beds;
-            $room->checkIn = $request->checkIn;
-            $room->checkOut  = $request->checkOut;
-            $room->extraPeopleFee = $request->extraPeopleFee;
-            $room->cleaningFee = $request->cleaningFee;
-            $room->description = $request->description;
-            $room->minimumStay = $request->minimumStay;
-            $room->save();
+    public function update(Request $request, Room $room)
+    {   
+        $this->validate($request, [
+            'name'  => 'required',
+            'price' => 'required',
+            'minimumStay' => 'required',
+            'aboutListing' => 'required',
+            'propertyType' => 'required',
+            'roomType'  => 'required',
+            'accommodates'  => 'required',
+            'bathrooms' => 'required',
+            'bedType'   => 'required',
+            'bedrooms'  => 'required',
+            'beds'  => 'required',
+            'checkIn'   => 'required',
+            'checkOut'  => 'required',
+            'extraPeopleFee'    => 'required',
+            'cleaningFee'   => 'required',
+            'description'   => 'required'
+        ]);
 
-            Flash::success('Hurray! Your room has been successfully updated.');
-            return redirect()->route('room', $room->id);
+        if( $room->update($request->all()) )
+        {
+            return 'Yey! Your room has been successfully updated.';
         }
 
-        Flash::success('Catch ya!');
-        return redirect()->back();
+        return 'Ooops! Something is wrong. Please try again.';
     }
 }
 

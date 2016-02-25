@@ -15,7 +15,7 @@ var RoomAmenities = React.createClass({
 			headers: { 'X-CSRF-Token' : csrfToken },
 			success: function(response)
 			{
-				console.log(response)
+				console.log(response);
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.log(err.toString());

@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="page__title">Rooms <span><a href="/user/{{ $user->id }}/rooms/create" class="btn btn-default">Add Room</a></span></h1>
+				<h1 class="page__title">Rooms <span><a href="/user/rooms/create" class="btn btn-default">Add Room</a></span></h1>
 				<ul class="list-group">
 					@foreach( $rooms as $room )
 					<li class="list-group-item">

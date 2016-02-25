@@ -39,7 +39,7 @@
                          </a>
                          <ul class="dropdown-menu">
                              <li><a href="#">Account Settings</a></li>
-                             <li><a href="/user/{{ Auth::user()->id }}/rooms">My Rooms</a></li>
+                             <li><a href="/user/rooms">My Rooms</a></li>
                              <li role="separator" class="divider"></li>
                              <li><a href="#">Separated link</a></li>
                              <li><a href="/logout">Logout</a></li>

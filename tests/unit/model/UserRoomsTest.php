@@ -16,7 +16,7 @@ class UserRoomsTest extends TestCase
 
     	$this->actingAs($user);
 
-    	$this->visit('/user/'.$user->id.'/rooms')
+    	$this->visit('user/rooms')
     		->see($room->name);
     }
 
@@ -25,7 +25,7 @@ class UserRoomsTest extends TestCase
     	$user = factory(App\User::class)->create();
     	$this->actingAs($user);
     	
-    	$this->visit('/user/'.$user->id.'/rooms/create')
+    	$this->visit('user/rooms/create')
     		->see('Add New Room');
     }
 
@@ -34,7 +34,7 @@ class UserRoomsTest extends TestCase
         $user = factory(App\User::class)->create();
         $this->actingAs($user);
 
-        $this->visit('/user/'.$user->id.'/rooms/create')
+        $this->visit('user/rooms/create')
             ->type('Room Name', 'name')
             ->type('20', 'price')
             ->select('Apartment', 'propertyType')
@@ -85,44 +85,46 @@ class UserRoomsTest extends TestCase
         $roomData = factory(App\Room::class)->make();
         $room = $user->rooms()->save($roomData);
 
-        $this->visit('/user/'.$user->id.'/rooms/'.$room->id.'/edit')
-            ->type('Updated Room Name', 'name')
-            ->type('1', 'price')
-            ->type('About this listing', 'aboutListing')
-            ->select('Apartment', 'propertyType')
-            ->select('Private Room', 'roomType')
-            ->type('1', 'accommodates')
-            ->type('1', 'bathrooms')
-            ->type('Updated Real Bed', 'bedType')
-            ->type('1', 'bedrooms')
-            ->type('1', 'beds')
-            ->select('12:00 PM', 'checkIn')
-            ->select('11:30 AM', 'checkOut')
-            ->type('1', 'extraPeopleFee')
-            ->type('1', 'cleaningFee')
-            ->select('1', 'minimumStay')
-            ->type('Room description', 'description')
-            ->press('Update Room Information')
-            ->seeInDatabase('rooms', [
-                'user_id'   => $user->id,
-                'name' => 'Updated Room Name',
-                'slug'  => 'updated-room-name',
-                'price' => 1,
-                'aboutListing' => 'About this listing',
-                'propertyType'  => 'Apartment',
-                'roomType'  => 'Private Room',
-                'accommodates'  =>  1,
-                'bathrooms' => 1,
-                'bedType'   => 'Updated Real Bed',
-                'bedrooms'  => 1,
-                'beds'  => 1,
-                'checkIn'   => '12:00 PM',
-                'checkOut'  => '11:30 AM',
-                'extraPeopleFee'    => 1,
-                'cleaningFee'   => 1,
-                'minimumStay'   => 1,
-                'description'   => 'Room description'
-            ])
-            ->seePageIs('/room/'.$room->id);
+        $userInput = [
+            'name'  => 'Updated Room Name',
+            'price' => 1,
+            'aboutListing'  => 'About this listing',
+            'propertyType'  => 'Apartment',
+            'roomType'  => 'Private Room',
+            'accommodates'  => 1,
+            'bathrooms' => 1,
+            'bedType'   => 'Updated Real Bed',
+            'bedrooms'  => 1,
+            'beds'  => 1,
+            'checkIn'   => '12:00 PM',
+            'checkOut'  => '11:30 AM',
+            'extraPeopleFee'    => 1,
+            'cleaningFee'   => 1,
+            'minimumStay'   => 1,
+            'description'   => 'Room description',
+        ];
+
+        $this->call('PUT', '/user/rooms/'.$room->id, $userInput);
+
+        $this->seeInDatabase('rooms', [
+            'user_id'   => $user->id,
+            'name' => 'Updated Room Name',
+            'slug'  => 'updated-room-name',
+            'price' => 1,
+            'aboutListing' => 'About this listing',
+            'propertyType'  => 'Apartment',
+            'roomType'  => 'Private Room',
+            'accommodates'  =>  1,
+            'bathrooms' => 1,
+            'bedType'   => 'Updated Real Bed',
+            'bedrooms'  => 1,
+            'beds'  => 1,
+            'checkIn'   => '12:00 PM',
+            'checkOut'  => '11:30 AM',
+            'extraPeopleFee'    => 1,
+            'cleaningFee'   => 1,
+            'minimumStay'   => 1,
+            'description'   => 'Room description'
+        ]);
     }
 }

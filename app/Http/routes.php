@@ -42,7 +42,7 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 	Route::post('bookings/{room}', ['as' => 'bookings.store', 'uses' => 'BookingsController@store']);
-	Route::resource('user.rooms', 'UserRoomsController');
+	Route::resource('user/rooms', 'UserRoomsController');
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'api'], function(){

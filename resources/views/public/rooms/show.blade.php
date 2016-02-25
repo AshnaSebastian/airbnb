@@ -74,7 +74,7 @@
 						<h2>About this listing 
 							@can('edit', $room)
 								<span class="float-right">
-									<a href="{{ route('user.rooms.edit', [Auth::user()->id, $room->id]) }}" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> Edit Room</a>
+									<a href="{{ route('user.rooms.edit', $room->id) }}" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> Edit Room</a>
 								</span>
 							@endcan
 						</h2>
@@ -211,7 +211,7 @@
 											<div class="col-md-6">
 												<ul>
 													<li>
-														<strong>2 nights</strong> minimum stay
+														<strong>{{ $room->minimumStay }} night{{ $room->minimumStay > 1 ? 's' : '' }}</strong> minimum stay
 													</li>
 												</ul>
 											</div>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Country;
 use App\Room;
+use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
@@ -26,6 +27,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
+        $this->bind('user', function($user) {
+            return User::findOrFail($user);
+        });
+        
         $this->bind('rooms', function($rooms) {
             return Room::with('user.country', 'photos', 'amenities')->findOrFail($rooms);
         });

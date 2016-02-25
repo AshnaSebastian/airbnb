@@ -19035,11 +19035,649 @@ module.exports = require('./lib/React');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var csrfToken = $('meta[name="csrf_token"]').attr('content');
 
 var RoomInformationForm = React.createClass({
 	displayName: 'RoomInformationForm',
+	getInitialState: function getInitialState() {
+		return {
+			room: window.room,
+
+			name: '',
+			price: '',
+			minimumStay: '',
+			aboutListing: '',
+			propertyType: '',
+			roomType: '',
+			accommodates: '',
+			bathrooms: '',
+			bedType: '',
+			bedrooms: '',
+			beds: '',
+			checkIn: '',
+			checkOut: '',
+			extraPeopleFee: '',
+			cleaningFee: '',
+			description: '',
+
+			isSubmitted: false,
+			errors: [],
+
+			errorDescription: ''
+		};
+	},
+	componentDidMount: function componentDidMount() {
+
+		if (window.room) {
+			this.setState({
+				name: window.room.name,
+				price: window.room.price,
+				minimumStay: window.room.minimumStay,
+				aboutListing: window.room.aboutListing,
+				propertyType: window.room.propertyType,
+				roomType: window.room.roomType,
+				accommodates: window.room.accommodates,
+				bathrooms: window.room.bathrooms,
+				bedType: window.room.bedType,
+				bedrooms: window.room.bedrooms,
+				beds: window.room.beds,
+				checkIn: window.room.checkIn,
+				checkOut: window.room.checkOut,
+				extraPeopleFee: window.room.extraPeopleFee,
+				cleaningFee: window.room.cleaningFee,
+				description: window.room.description
+			});
+		}
+	},
+	handleChange: function handleChange(name, e) {
+		var newState = {};
+		newState[name] = e.target.value;
+
+		this.setState(newState);
+	},
+	submitForm: function submitForm(e) {
+
+		e.preventDefault();
+
+		this.setState({
+			isSubmitted: true
+		});
+
+		var updateRoomUrl = '/user/rooms/' + window.room.id;
+
+		console.log(updateRoomUrl);
+
+		$.ajax({
+			url: updateRoomUrl,
+			type: 'PUT',
+			headers: {
+				'X-CSRF-Token': csrfToken
+			},
+			data: {
+				name: this.state.name,
+				price: this.state.price,
+				minimumStay: this.state.minimumStay,
+				aboutListing: this.state.aboutListing,
+				propertyType: this.state.propertyType,
+				roomType: this.state.roomType,
+				accommodates: this.state.accommodates,
+				bathrooms: this.state.bathrooms,
+				bedType: this.state.bedType,
+				bedrooms: this.state.bedrooms,
+				beds: this.state.beds,
+				checkIn: this.state.checkIn,
+				checkOut: this.state.checkOut,
+				extraPeopleFee: this.state.extraPeopleFee,
+				cleaningFee: this.state.cleaningFee,
+				description: this.state.description
+			},
+			success: function (response) {
+				this.setState({
+					isSubmitted: false
+				});
+
+				swal({
+					title: "Airbnb",
+					text: response,
+					type: "success",
+					timer: 2000,
+					showConfirmButton: false,
+					confirmButtonText: 'Okay'
+				});
+			}.bind(this),
+			error: function (xhr, status, err) {
+				var required = ['name', 'price', 'minimumStay', 'aboutListing', 'propertyType', 'roomType', 'accommodates', 'bathrooms', 'bedType', 'bedrooms', 'beds', 'checkIn', 'checkOut', 'extraPeopleFee', 'cleaningFee', 'description'];
+
+				required.map(function (key) {
+					console.log('this.state.' + key);
+					if (!this.state.key) {
+						console.log('hie');
+						this.setState({
+							errorDescription: xhr.responseJSON[key].join('. '),
+							isSubmitted: false
+						});
+					} else {
+						console.log('What is that? I cannot read it!');
+					}
+				});
+
+				console.log(this.state.errorDescription);
+
+				// console.log(this.state.errors);				
+				// swal({
+				// 	title: "Airbnb", 
+				// 	text: err.toString(), 
+				// 	type: "error",
+				// 	showConfirmButton: true,
+				// 	confirmButtonText: 'Okay'
+				// });
+			}.bind(this)
+		});
+	},
 	render: function render() {
-		return React.createElement('div', null);
+		var countArray = [1, 2, 3, 4, 5];
+
+		var minimumStayOptions = countArray.map(function (count, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: count },
+				count,
+				' day',
+				count > 1 ? 's' : ''
+			);
+		});
+
+		var propertyTypes = ['Other', 'Apartment'];
+		var propertyTypeOptions = propertyTypes.map(function (type, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: type },
+				type
+			);
+		});
+
+		var roomTypes = ['Private Room', 'Entire home/apt', 'Shared Room'];
+		var roomTypeOptions = roomTypes.map(function (type, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: type },
+				type
+			);
+		});
+
+		var accommodatesOptions = countArray.map(function (count, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: count },
+				count,
+				' person',
+				count > 1 ? 's' : ''
+			);
+		});
+
+		var bathroomsOptions = countArray.map(function (count, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: count },
+				count,
+				' bathroom',
+				count > 1 ? 's' : ''
+			);
+		});
+
+		var bedroomsOptions = countArray.map(function (count, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: count },
+				count,
+				' bedroom',
+				count > 1 ? 's' : ''
+			);
+		});
+
+		var bedsOptions = countArray.map(function (count, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: count },
+				count,
+				' bed',
+				count > 1 ? 's' : ''
+			);
+		});
+
+		var timings = ['8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM', '08:00 PM', '08:30 PM', '09:00 PM', '09:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'];
+
+		var timingsOptions = timings.map(function (time, index) {
+			return React.createElement(
+				'option',
+				{ key: index, value: time },
+				time
+			);
+		});
+
+		// var errorMessages = this.state.errors.map(function(error) {
+		// 	console.log(error);
+		// }.bind(this));
+
+		return React.createElement(
+			'form',
+			{ onSubmit: this.submitForm },
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(
+					'div',
+					{ className: 'col-md-12' },
+					React.createElement(
+						'h1',
+						{ className: 'page__title' },
+						'Update Room Information'
+					),
+					React.createElement('hr', null),
+					!this.state.errors ? React.createElement('div', { className: 'alert alert-danger' }) : '',
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Name'
+								),
+								React.createElement('input', { type: 'text',
+									className: 'form-control',
+									value: this.state.name,
+									onChange: this.handleChange.bind(this, 'name'),
+									refs: 'name',
+									placeholder: 'What\'s your room name?' })
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Price'
+								),
+								React.createElement(
+									'div',
+									{ className: 'input-group' },
+									React.createElement(
+										'div',
+										{ className: 'input-group-addon' },
+										'$'
+									),
+									React.createElement('input', { type: 'text',
+										className: 'form-control',
+										value: this.state.price,
+										onChange: this.handleChange.bind(this, 'price'),
+										placeholder: 'Price per night' })
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Minimum Stay'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.minimumStay,
+										onChange: this.handleChange.bind(this, 'minimumStay') },
+									minimumStayOptions
+								)
+							)
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'form-group' },
+						React.createElement(
+							'label',
+							null,
+							'About this listing'
+						),
+						React.createElement('textarea', { rows: '10',
+							className: 'form-control',
+							value: this.state.aboutListing,
+							onChange: this.handleChange.bind(this, 'aboutListing'),
+							placeholder: 'Brief description of the room' })
+					),
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(
+							'div',
+							{ className: 'col-md-12' },
+							React.createElement(
+								'h3',
+								null,
+								'The Space'
+							),
+							React.createElement('hr', null)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Property Type'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.propertyType,
+										onChange: this.handleChange.bind(this, 'propertyType') },
+									propertyTypeOptions
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Room Type'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.roomType,
+										onChange: this.handleChange.bind(this, 'roomType') },
+									roomTypeOptions
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Accommodates'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.accommodates,
+										onChange: this.handleChange.bind(this, 'accommodates') },
+									accommodatesOptions
+								)
+							)
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Bathrooms'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.bathrooms,
+										onChange: this.handleChange.bind(this, 'bathrooms') },
+									bathroomsOptions
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Bed Type'
+								),
+								React.createElement('input', { type: 'text',
+									className: 'form-control',
+									value: this.state.bedType,
+									onChange: this.handleChange.bind(this, 'bedType'),
+									placeholder: 'Bed Type' })
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Bedrooms'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.bedrooms,
+										onChange: this.handleChange.bind(this, 'bedrooms') },
+									bedroomsOptions
+								)
+							)
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Beds'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.beds,
+										onChange: this.handleChange.bind(this, 'beds') },
+									bedsOptions
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Check In'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.checkIn,
+										onChange: this.handleChange.bind(this, 'checkIn') },
+									timingsOptions
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'col-md-4' },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									null,
+									'Check Out'
+								),
+								React.createElement(
+									'select',
+									{ className: 'form-control',
+										value: this.state.checkOut,
+										onChange: this.handleChange.bind(this, 'checkOut') },
+									timingsOptions
+								)
+							)
+						)
+					)
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(
+					'div',
+					{ className: 'col-md-12' },
+					React.createElement(
+						'h3',
+						null,
+						'Amenities'
+					),
+					React.createElement('hr', null)
+				),
+				React.createElement('div', { id: 'RoomAmenities' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(
+					'div',
+					{ className: 'col-md-12' },
+					React.createElement(
+						'h3',
+						null,
+						'Prices'
+					),
+					React.createElement('hr', null)
+				),
+				React.createElement(
+					'div',
+					{ className: 'col-md-3' },
+					React.createElement(
+						'div',
+						{ className: 'form-group' },
+						React.createElement(
+							'label',
+							null,
+							'Extra People'
+						),
+						React.createElement(
+							'div',
+							{ className: 'input-group' },
+							React.createElement(
+								'div',
+								{ className: 'input-group-addon' },
+								'$'
+							),
+							React.createElement('input', { type: 'text',
+								className: 'form-control',
+								value: this.state.extraPeopleFee,
+								onChange: this.handleChange.bind(this, 'extraPeopleFee'),
+								placeholder: 'Extra People Fee' })
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'col-md-3' },
+					React.createElement(
+						'div',
+						{ className: 'form-group' },
+						React.createElement(
+							'label',
+							null,
+							'Cleaning Fee'
+						),
+						React.createElement(
+							'div',
+							{ className: 'input-group' },
+							React.createElement(
+								'div',
+								{ className: 'input-group-addon' },
+								'$'
+							),
+							React.createElement('input', { type: 'text',
+								className: 'form-control',
+								value: this.state.cleaningFee,
+								onChange: this.handleChange.bind(this, 'cleaningFee'),
+								placeholder: 'Cleaning Fee' })
+						)
+					)
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'form-group' },
+				React.createElement(
+					'label',
+					null,
+					'Description'
+				),
+				React.createElement('textarea', { rows: '10',
+					className: 'form-control',
+					value: this.state.description,
+					onChange: this.handleChange.bind(this, 'description'),
+					placeholder: 'Description of the room' })
+			),
+			React.createElement('hr', null),
+			React.createElement(
+				'div',
+				{ className: 'row' },
+				React.createElement(
+					'div',
+					{ className: 'col-md-12' },
+					React.createElement(
+						'button',
+						{ type: 'submit',
+							name: 'submit',
+							className: 'btn btn-primary btn-lg',
+							disabled: this.state.isSubmitted ? 'disabled' : '',
+							onClick: this.submitForm },
+						'Update Room Information  ',
+						this.state.isSubmitted ? React.createElement('i', { className: 'fa fa-spinner fa-spin' }) : ''
+					)
+				)
+			)
+		);
 	}
 });
 

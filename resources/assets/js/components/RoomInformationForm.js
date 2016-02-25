@@ -1,27 +1,258 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var csrfToken = $('meta[name="csrf_token"]').attr('content');
 
 var RoomInformationForm = React.createClass({
 
 	getInitialState() {
 		return {
-			user: window.user,
-			room: window.room
+			room: window.room,
+
+			name: '',
+			price: '',
+			minimumStay: '',
+			aboutListing: '',
+			propertyType: '',
+			roomType: '',
+			accommodates: '',
+			bathrooms: 	'',
+			bedType: '',
+			bedrooms: '',
+			beds: '',
+			checkIn: '',
+			checkOut: '',
+			extraPeopleFee: '',
+			cleaningFee: '',
+			description: '',
+
+			isSubmitted: false,
+			errors: [],
+
+			errorDescription: ''
 		}
 	},
 
+	componentDidMount() {
+
+		if( window.room )
+		{
+			this.setState({
+				name: window.room.name,
+				price: window.room.price,
+				minimumStay: window.room.minimumStay,
+				aboutListing: window.room.aboutListing,
+				propertyType: window.room.propertyType,
+				roomType: window.room.roomType,
+				accommodates: window.room.accommodates,
+				bathrooms: 	window.room.bathrooms,
+				bedType: window.room.bedType,
+				bedrooms: window.room.bedrooms,
+				beds: window.room.beds,	
+				checkIn: window.room.checkIn,
+				checkOut: window.room.checkOut,
+				extraPeopleFee: window.room.extraPeopleFee,
+				cleaningFee: window.room.cleaningFee,
+				description: window.room.description
+			});
+		}
+	},
+
+	handleChange(name, e)
+	{
+		var newState = {};
+		newState[name] = e.target.value;
+
+		this.setState(newState)
+	},
+
+	submitForm(e) {
+
+		e.preventDefault();
+		
+		this.setState({
+			isSubmitted: true
+		});
+
+		var updateRoomUrl = '/user/rooms/' + window.room.id;
+
+		console.log(updateRoomUrl);
+
+		$.ajax({
+			url: updateRoomUrl,
+			type: 'PUT',
+			headers: {
+				'X-CSRF-Token' : csrfToken,
+			},
+			data: {
+				name: this.state.name,
+				price: this.state.price,
+				minimumStay: this.state.minimumStay,
+				aboutListing: this.state.aboutListing,
+				propertyType: this.state.propertyType,
+				roomType: this.state.roomType,
+				accommodates: this.state.accommodates,
+				bathrooms: 	this.state.bathrooms,
+				bedType: this.state.bedType,
+				bedrooms: this.state.bedrooms,
+				beds: this.state.beds,	
+				checkIn: this.state.checkIn,
+				checkOut: this.state.checkOut,
+				extraPeopleFee: this.state.extraPeopleFee,
+				cleaningFee: this.state.cleaningFee,
+				description: this.state.description
+			},
+			success: function(response) {
+				this.setState({
+					isSubmitted: false
+				});
+
+				swal({
+					title: "Airbnb",  
+					text: response,  
+					type: "success", 
+					timer: 2000,
+					showConfirmButton: false,
+					confirmButtonText: 'Okay'
+				});
+
+			}.bind(this),
+			error: function(xhr, status, err) {
+				var required = [
+					'name', 'price', 'minimumStay', 'aboutListing', 'propertyType', 
+					'roomType', 'accommodates', 'bathrooms', 'bedType', 'bedrooms', 'beds', 
+					'checkIn', 'checkOut', 'extraPeopleFee', 'cleaningFee', 'description'
+				];
+
+				required.map(function(key) {
+					console.log( `this.state.${key}` );
+					if( ! this.state.key )
+					{
+						console.log('hie');
+						this.setState({
+							errorDescription: xhr.responseJSON[key].join('. '),
+							isSubmitted: false
+						});
+					}
+					else
+					{
+						console.log('What is that? I cannot read it!');
+					}
+				});
+				
+
+				console.log(this.state.errorDescription);
+
+				// console.log(this.state.errors);				
+				// swal({
+				// 	title: "Airbnb",  
+				// 	text: err.toString(),  
+				// 	type: "error", 
+				// 	showConfirmButton: true,
+				// 	confirmButtonText: 'Okay'
+				// });
+			}.bind(this)
+		})
+	},
+
 	render() {
+		var countArray = [1, 2, 3, 4, 5];
+
+		var minimumStayOptions = countArray.map(function(count, index) {
+			return (
+				<option key={index} value={count}>
+					{ count } day{ count > 1 ? 's' : '' }
+				</option>
+			)
+		});
+		
+		var propertyTypes = ['Other', 'Apartment'];
+		var propertyTypeOptions = propertyTypes.map(function(type, index) {
+			return (
+				<option key={index} value={type}>
+					{ type }
+				</option>
+			)
+		});
+
+		var roomTypes = ['Private Room', 'Entire home/apt', 'Shared Room'];
+		var roomTypeOptions = roomTypes.map(function(type, index) {
+			return (
+				<option key={index} value={type}>
+					{ type }
+				</option>
+			)
+		});
+
+		var accommodatesOptions = countArray.map(function(count, index) {
+			return (
+				<option key={index} value={count}>
+					{ count } person{ count > 1 ? 's' : '' }
+				</option>
+			)
+		});
+
+		var bathroomsOptions = countArray.map(function(count, index) {
+			return (
+				<option key={index} value={count}>
+					{ count } bathroom{ count > 1 ? 's' : '' }
+				</option>
+			)
+		});
+
+		var bedroomsOptions = countArray.map(function(count, index) {
+			return (
+				<option key={index} value={count}>
+					{ count } bedroom{ count > 1 ? 's' : '' }
+				</option>
+			)
+		});
+
+		var bedsOptions = countArray.map(function(count, index) {
+			return (
+				<option key={index} value={count}>
+					{ count } bed{ count > 1 ? 's' : '' }
+				</option>
+			)
+		});
+
+		var timings = [
+			'8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM',
+			'01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM', '05:00 PM',
+			'05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM', '08:00 PM', '08:30 PM', '09:00 PM', '09:30 PM',
+			'10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'
+		];
+
+		var timingsOptions = timings.map(function(time, index) {
+			return (
+				<option key={index} value={time}>
+					{ time }
+				</option>
+			)
+		});
+
+		// var errorMessages = this.state.errors.map(function(error) {
+		// 	console.log(error);
+		// }.bind(this));
+
 		return(
-			<form method="POST">
+			<form onSubmit={this.submitForm}>
 				<div className="row">
 					<div className="col-md-12">
 						<h1 className="page__title">Update Room Information</h1>
 						<hr />
+						{ ! this.state.errors ?
+							<div className="alert alert-danger"></div>
+						: '' }
 						<div className="row">
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Name</label>
-									<input type="text" name="name" className="form-control" value={ this.state.room.name } placeholder="What's your room name?" />
+									<input type="text" 
+										className="form-control" 
+										value={ this.state.name } 
+										onChange={this.handleChange.bind(this, 'name')}
+										refs="name"
+										placeholder="What's your room name?" />
 								</div>
 							</div>
 
@@ -30,7 +261,11 @@ var RoomInformationForm = React.createClass({
 									<label>Price</label>
 									<div className="input-group">
 										<div className="input-group-addon">$</div>
-										<input type="text" name="price" className="form-control" value={ this.state.room.price } placeholder="Price per night" />
+										<input type="text"
+											className="form-control" 
+											value={ this.state.price } 
+											onChange={this.handleChange.bind(this, 'price')}
+											placeholder="Price per night" />
 									</div>
 								</div>
 							</div>
@@ -38,10 +273,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Minimum Stay</label>
-									<select name="minimumStay" className="form-control">
-										@foreach( range(1, 5) as $index )
-											<option value="{{ $index }}">{{ $index }} day{{ $index == 1 ? '' : 's'}}</option>
-										@endforeach	
+									<select className="form-control" 
+										value={this.state.minimumStay}
+										onChange={this.handleChange.bind(this, 'minimumStay')}>
+										{ minimumStayOptions }
 									</select>
 								</div>		
 							</div>
@@ -49,7 +284,13 @@ var RoomInformationForm = React.createClass({
 
 						<div className="form-group">
 							<label>About this listing</label>
-							<textarea name="aboutListing" rows="10" className="form-control" placeholder="Brief description of the room"></textarea>
+							<textarea rows="10" 
+								className="form-control" 
+								value={ this.state.aboutListing } 
+								onChange={this.handleChange.bind(this, 'aboutListing')}
+								placeholder="Brief description of the room">
+								
+							</textarea>
 						</div>
 						
 						<div className="row">
@@ -60,9 +301,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Property Type</label>
-									<select name="propertyType" className="form-control">
-										<option value=""></option>
-										<option value="Apartment">Apartment</option>
+									<select className="form-control" 
+										value={this.state.propertyType}
+										onChange={this.handleChange.bind(this, 'propertyType')}>
+										{ propertyTypeOptions }
 									</select>
 								</div>
 							</div>
@@ -70,11 +312,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Room Type</label>
-									<select name="roomType" className="form-control">
-										<option value=""></option>
-										<option value="Private Room">Private Room</option>
-										<option value="Entire home/apt">Entire home/apt</option>
-										<option value="Shared Room">Shared Room</option>
+									<select className="form-control" 
+										value={this.state.roomType}
+										onChange={this.handleChange.bind(this, 'roomType')}>
+										{ roomTypeOptions }
 									</select>
 								</div>
 							</div>
@@ -82,10 +323,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Accommodates</label>
-									<select name="accommodates" className="form-control">
-										@foreach( range(1, 5) as $index )
-											<option value="{{ $index }}">{{ $index }} people</option>
-										@endforeach	
+									<select className="form-control" 
+										value={this.state.accommodates}
+										onChange={this.handleChange.bind(this, 'accommodates')}>
+										{ accommodatesOptions }
 									</select>
 								</div>
 							</div>
@@ -95,10 +336,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Bathrooms</label>
-									<select name="bathrooms" className="form-control">
-										@foreach( range(1, 5) as $index )
-											<option value="{{ $index }}">{{ $index }} bathroom{{ $index == 1 ? '' : 's'}}</option>
-										@endforeach	
+									<select className="form-control"
+										value={this.state.bathrooms}
+										onChange={this.handleChange.bind(this, 'bathrooms')}>
+										{ bathroomsOptions }
 									</select>
 								</div>
 							</div>
@@ -106,17 +347,21 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Bed Type</label>
-									<input type="text" name="bedType" className="form-control" value="{{ $room->bedType }}" placeholder="Bed Type" />
+									<input type="text"
+										className="form-control" 
+										value={this.state.bedType}
+										onChange={this.handleChange.bind(this, 'bedType')}
+										placeholder="Bed Type" />
 								</div>
 							</div>
 
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Bedrooms</label>
-									<select name="bedrooms" className="form-control">
-										@foreach( range(1, 5) as $index )
-											<option value="{{ $index }}">{{ $index }} bedroom{{ $index == 1 ? '' : 's'}}</option>
-										@endforeach	
+									<select className="form-control"
+										value={this.state.bedrooms}
+										onChange={this.handleChange.bind(this, 'bedrooms')}>
+										{ bedroomsOptions }
 									</select>
 								</div>
 							</div>
@@ -126,10 +371,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Beds</label>
-									<select name="beds" className="form-control">
-										@foreach( range(1, 5) as $index )
-											<option value="{{ $index }}">{{ $index }} bed{{ $index == 1 ? '' : 's'}}</option>
-										@endforeach	
+									<select className="form-control"
+										value={this.state.beds}
+										onChange={this.handleChange.bind(this, 'beds')}>
+										{ bedsOptions }
 									</select>
 								</div>
 							</div>
@@ -137,10 +382,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Check In</label>
-									<select name="checkIn" className="form-control">
-										@foreach( $timings->get() as $time )
-											<option value="{{ $time }}">{{ $time }}</option>
-										@endforeach	
+									<select className="form-control"
+										value={this.state.checkIn}
+										onChange={this.handleChange.bind(this, 'checkIn')}>
+										{ timingsOptions }
 									</select>
 								</div>
 							</div>
@@ -148,10 +393,10 @@ var RoomInformationForm = React.createClass({
 							<div className="col-md-4">
 								<div className="form-group">
 									<label>Check Out</label>
-									<select name="checkOut" className="form-control">
-										@foreach( $timings->get() as $time )
-											<option value="{{ $time }}">{{ $time }}</option>
-										@endforeach	
+									<select className="form-control" 
+										value={this.state.checkOut}
+										onChange={this.handleChange.bind(this, 'checkOut')}>
+										{ timingsOptions }
 									</select>
 								</div>
 							</div>
@@ -180,7 +425,11 @@ var RoomInformationForm = React.createClass({
 							<label>Extra People</label>
 							<div className="input-group">
 								<div className="input-group-addon">$</div>
-								<input type="text" name="extraPeopleFee" className="form-control" value="{{ $room->extraPeopleFee }}" placeholder="Extra People Fee" />
+								<input type="text" 
+									className="form-control" 
+									value={this.state.extraPeopleFee}
+									onChange={this.handleChange.bind(this, 'extraPeopleFee')} 
+									placeholder="Extra People Fee" />
 							</div>
 						</div>
 					</div>
@@ -190,7 +439,11 @@ var RoomInformationForm = React.createClass({
 							<label>Cleaning Fee</label>
 							<div className="input-group">
 								<div className="input-group-addon">$</div>
-								<input type="text" name="cleaningFee" className="form-control" value="{{ $room->cleaningFee }}" placeholder="Cleaning Fee" />
+								<input type="text" 
+									className="form-control"
+									value={this.state.cleaningFee}
+									onChange={this.handleChange.bind(this, 'cleaningFee')}
+									placeholder="Cleaning Fee" />
 							</div>
 						</div>
 					</div>
@@ -198,14 +451,26 @@ var RoomInformationForm = React.createClass({
 
 				<div className="form-group">
 					<label>Description</label>
-					<textarea name="description" rows="10" className="form-control" placeholder="Description of the room"></textarea>
+					<textarea rows="10" 
+						className="form-control" 
+						value={this.state.description} 
+						onChange={this.handleChange.bind(this, 'description')}
+						placeholder="Description of the room">
+					</textarea>
 				</div>
 
 				<hr />
 
 				<div className="row">
 					<div className="col-md-12">
-						<button type="submit" name="submit" className="btn btn-primary btn-lg">Update Room Information</button>
+						<button type="submit" 
+							name="submit" 
+							className="btn btn-primary btn-lg"
+							disabled={this.state.isSubmitted ? 'disabled' : ''}
+							onClick={this.submitForm}>
+							Update Room Information &nbsp; 
+							{ this.state.isSubmitted ? <i className="fa fa-spinner fa-spin"></i> : '' }
+						</button>
 					</div>
 				</div>
 			</form>
